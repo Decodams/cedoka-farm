@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="description"
+        content="Product Details - Cedoka Farms. Fresh, organic produce, poultry, and animal feeds based in Awka, Nigeria." />
+    <title>Product Details | Cedoka Farms</title>
+    <style>
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background-color: #f6f8f7;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+
+        #preloader img {
+            width: 120px;
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+            }
+            to {
+                transform: scale(1.1);
+            }
+        }
+    </style>
+    <script>
+        window.addEventListener('load', () => { setTimeout(() => { const preloader = document.getElementById('preloader'); if (preloader) { preloader.style.opacity = '0'; setTimeout(() => preloader.style.display = 'none', 500); } }, 500); });
+        function toggleMobileNav() { const nav = document.getElementById('mobile-nav'); if (nav) nav.classList.toggle('translate-x-full'); }
+        function updateQty(change) {
+            let qty = document.getElementById('qty');
+            if(qty) {
+                let current = parseInt(qty.value);
+                if (current + change >= 1) qty.value = current + change;
+            }
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0a3d2e",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#12201c",
+                        "gold": "#d4af37",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-sans text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden">
+    <div id="preloader">
+        <img src="assets/logo.png" alt="Cedoka Farms Logo" />
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-nav"
+        class="fixed inset-0 z-[100] bg-white/95 backdrop-blur-md transform translate-x-full transition-transform duration-300 flex flex-col pt-24 px-6 md:px-10 pb-10 overflow-y-auto lg:hidden">
+        <button onclick="toggleMobileNav()"
+            class="absolute top-6 right-6 text-primary hover:text-gold transition-colors">
+            <span class="material-symbols-outlined text-4xl">close</span>
+        </button>
+        <nav class="flex flex-col gap-6 items-center">
+            <a class="text-primary text-2xl font-black uppercase tracking-widest hover:text-gold transition-colors" href="index.html">Home</a>
+            <a class="text-primary/70 text-2xl font-bold uppercase tracking-widest hover:text-gold transition-colors" href="about.html">About</a>
+            <a class="text-primary/70 text-2xl font-bold uppercase tracking-widest hover:text-gold transition-colors" href="shop.html">Shop</a>
+            <a class="text-primary/70 text-2xl font-bold uppercase tracking-widest hover:text-gold transition-colors" href="contact.html">Contact</a>
+        </nav>
+        <div class="mt-auto pt-10 text-center text-primary/70 flex flex-col items-center gap-2">
+            <span class="material-symbols-outlined text-gold">location_on</span>
+            <p class="font-bold">Awka, Nigeria</p>
+        </div>
+    </div>
+
+    <!-- Sticky Navbar -->
+    <header class="sticky top-0 z-50 w-full border-b border-primary/10 bg-white/95 backdrop-blur-md px-6 md:px-10 lg:px-20 py-4">
+        <div class="mx-auto flex max-w-7xl items-center justify-between gap-8">
+            <a href="index.html" class="flex items-center gap-2 z-50 relative shrink-0">
+                <img src="assets/logo.png" alt="Cedoka Farms" class="h-10 md:h-12 w-auto object-contain" />
+            </a>
+            <nav class="hidden lg:flex items-center gap-10">
+                <a class="text-primary/70 text-sm font-bold uppercase tracking-widest hover:text-gold transition-colors" href="index.html">Home</a>
+                <a class="text-primary/70 text-sm font-bold uppercase tracking-widest hover:text-gold transition-colors" href="about.html">About</a>
+                <a class="text-primary text-sm font-bold uppercase tracking-widest hover:text-gold transition-colors" href="shop.html">Shop</a>
+                <a class="text-primary/70 text-sm font-bold uppercase tracking-widest hover:text-gold transition-colors" href="contact.html">Contact</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <button onclick="toggleMobileNav()" class="lg:hidden ml-4 text-primary hover:text-gold transition-colors z-50 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-3xl">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+        <!-- Close Button -->
+        <div class="mb-8">
+            <a href="shop.html" class="inline-flex flex-row items-center gap-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 transition-colors text-primary dark:text-white px-5 py-2.5 rounded-full font-bold text-xs tracking-widest uppercase">
+                <span class="material-symbols-outlined text-sm">close</span>
+                Close Details
+            </a>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 bg-white dark:bg-slate-800/50 p-6 md:p-12 rounded-2xl shadow-xl border border-primary/5">
+            <!-- Product Image -->
+            <div class="rounded-xl overflow-hidden bg-slate-100 aspect-square group">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeZa13cwuKrU-yDH12Jh2EXZo3WkF0vkNszSTqFblkNQqok7OumM_wmNJ0flJ9U6JwoMESimcNqEjoL1efaeO6iWVt60-EFrEixARZ0JSlBgClVz9yElGFjmWnexJDhrewkMCiL6bxDVSkPE-XJC9MruOq6Vm9iKXhhpge5XVvL8eWdHGZirglLvxLD7TeUgYzoeq31pYiauf8lndxioQQHDFyg0CTtwPfXXxvxrLBir7ZWuGxsOkWj94gyAThKDjbHxvgtGJpLNs" alt="Farm Fresh Eggs" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+            </div>
+            
+            <!-- Product Info -->
+            <div class="flex flex-col justify-center">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="inline-flex items-center rounded bg-green-100 dark:bg-green-900/30 px-2.5 py-1 text-[10px] font-bold text-green-700 dark:text-green-400 uppercase tracking-tighter">Organic</span>
+                    <span class="inline-flex items-center rounded bg-blue-100 dark:bg-blue-900/30 px-2.5 py-1 text-[10px] font-bold text-blue-700 dark:text-blue-400 uppercase tracking-tighter">Poultry</span>
+                </div>
+                
+                <h1 class="text-4xl md:text-5xl font-display font-bold text-primary mb-4">Farm Fresh Eggs</h1>
+                <p class="text-3xl font-bold text-gold mb-6">$6.50 <span class="text-sm font-normal text-slate-500 dark:text-slate-400">/ dozen</span></p>
+                
+                <p class="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed font-light">
+                    Pasture-raised, gathered this morning. Our hens roam completely free on organic pastures. Their diverse diet results in eggs with deep orange, nutrient-rich yolks that sit up tall in the pan. Perfectly fresh and incredibly flavorful.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-8 border-y border-slate-200 dark:border-slate-700 py-6">
+                    <div class="flex items-center bg-slate-100 dark:bg-slate-900 rounded-xl overflow-hidden w-full sm:w-auto shrink-0 justify-between">
+                        <button class="px-5 py-3 text-primary hover:bg-slate-200 transition focus:outline-none font-bold text-xl" onclick="updateQty(-1)">-</button>
+                        <input type="number" id="qty" value="1" min="1" class="w-16 bg-transparent border-none text-center font-bold focus:ring-0 p-0 text-primary" readonly>
+                        <button class="px-5 py-3 text-primary hover:bg-slate-200 transition focus:outline-none font-bold text-xl" onclick="updateQty(1)">+</button>
+                    </div>
+                    
+                    <button class="w-full sm:flex-1 bg-primary text-white font-bold py-4 rounded-xl hover:opacity-90 transition shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined">shopping_cart</span>
+                        ADD TO CART
+                    </button>
+                </div>
+                
+                <div class="space-y-4 text-sm font-medium">
+                    <div class="flex items-center gap-3 text-slate-600 dark:text-slate-300">
+                        <span class="material-symbols-outlined text-primary">local_shipping</span>
+                        <span>Free local delivery on orders over $50</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-slate-600 dark:text-slate-300">
+                        <span class="material-symbols-outlined text-primary">eco</span>
+                        <span>100% Certified Organic</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Premium Footer -->
+    <footer class="mt-20 border-t border-primary/10 bg-white dark:bg-background-dark py-16">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3">
+                        <img src="assets/logo.png" alt="Cedoka Farms" class="h-8 md:h-10 w-auto object-contain" />
+                    </div>
+                    <div class="flex gap-2 items-center text-primary mt-2">
+                        <span class="material-symbols-outlined">location_on</span>
+                        <p class="text-sm font-bold">Awka, Nigeria</p>
+                    </div>
+                    <p class="text-sm text-slate-500 leading-relaxed font-light">Cultivating a sustainable future through organic
+                        farming and community-first practices. From our soil to your soul.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-primary mb-6">Quick Links</h4>
+                    <ul class="space-y-4 text-sm text-slate-600 dark:text-slate-400">
+                        <li><a class="hover:text-primary transition" href="#">Organic Certification</a></li>
+                        <li><a class="hover:text-primary transition" href="#">Farm-to-Table Guide</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-primary mb-6">Customer Support</h4>
+                    <ul class="space-y-4 text-sm text-slate-600 dark:text-slate-400">
+                        <li><a class="hover:text-primary transition" href="#">Help Center</a></li>
+                        <li><a class="hover:text-primary transition" href="#">Refund Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-16 pt-8 border-t border-primary/10 text-center flex flex-col items-center gap-4">
+                <p class="text-sm text-slate-500 font-light">&copy; 2026 Cedoka Farms. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

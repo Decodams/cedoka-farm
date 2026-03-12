@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <meta name="description"
+        content="About Cedoka Farms - Rooted in Integrity, Grown with Passion. Based in Awka, Nigeria." />
+    <meta name="keywords" content="Cedoka, Cedoka Farms, About us, Organic farming, Awka, Nigeria" />
+    <title>About Us | Cedoka Farms</title>
+    <style>
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background-color: #ffffff;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+
+        #preloader img {
+            width: 120px;
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.1);
+            }
+        }
+
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+    </style>
+    <script>
+        window.addEventListener('load', () => { setTimeout(() => { const preloader = document.getElementById('preloader'); if (preloader) { preloader.style.opacity = '0'; setTimeout(() => preloader.style.display = 'none', 500); } }, 500); });
+        document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } }); });
+            document.querySelectorAll('section').forEach(sec => { sec.classList.add('fade-in-section'); observer.observe(sec); });
+        });
+        function toggleMobileNav() { const nav = document.getElementById('mobile-nav'); if (nav) nav.classList.toggle('translate-x-full'); }
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0a3d2e",
+                        "gold": "#d4af37",
+                        "background-light": "#ffffff",
+                        "background-dark": "#12201c",
+                    },
+                    fontFamily: {
+                        "sans": ["Inter", "sans-serif"],
+                        "display": ["Playfair Display", "serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .timeline-line {
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background-color: #d4af37;
+            opacity: 0.3;
+        }
+
+        .sticky-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .luxury-text {
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-sans text-slate-900 dark:text-slate-100 antialiased">
+    <div id="preloader">
+        <img src="assets/logo.png" alt="Cedoka Farms Logo" />
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-nav"
+        class="fixed inset-0 z-[100] bg-white/95 backdrop-blur-md transform translate-x-full transition-transform duration-300 flex flex-col pt-24 px-6 md:px-10 pb-10 overflow-y-auto lg:hidden">
+        <button onclick="toggleMobileNav()"
+            class="absolute top-6 right-6 text-primary hover:text-gold transition-colors">
+            <span class="material-symbols-outlined text-4xl">close</span>
+        </button>
+        <nav class="flex flex-col gap-6 items-center">
+            <a class="text-primary text-2xl font-black uppercase tracking-widest hover:text-gold transition-colors"
+                href="index.html">Home</a>
+            <a class="text-primary/70 text-2xl font-bold uppercase tracking-widest hover:text-gold transition-colors"
+                href="about.html">About</a>
+            <a class="text-primary/70 text-2xl font-bold uppercase tracking-widest hover:text-gold transition-colors"
+                href="shop.html">Shop</a>
+            <a class="text-primary/70 text-2xl font-bold uppercase tracking-widest hover:text-gold transition-colors"
+                href="contact.html">Contact</a>
+        </nav>
+        <div class="mt-auto pt-10 text-center text-primary/70 flex flex-col items-center gap-2">
+            <span class="material-symbols-outlined text-gold">location_on</span>
+            <p class="font-bold">Awka, Nigeria</p>
+        </div>
+    </div>
+    <header
+        class="sticky top-0 z-50 w-full border-b border-primary/10 bg-linen/95 backdrop-blur-md px-6 md:px-10 lg:px-20 py-4">
+        <div class="mx-auto flex max-w-7xl items-center justify-between gap-8">
+            <a href="index.html" class="flex items-center gap-2 z-50 relative shrink-0">
+                <img src="assets/logo.png" alt="Cedoka Farms" class="h-10 md:h-12 w-auto object-contain" />
+            </a>
+            <nav class="hidden lg:flex items-center gap-10">
+                <a class="text-primary text-sm font-bold uppercase tracking-widest hover:text-gold transition-colors"
+                    href="index.html">Home</a>
+                <a class="text-primary/70 text-sm font-bold uppercase tracking-widest hover:text-gold transition-colors"
+                    href="about.html">About</a>
+
+                <a class="text-primary/70 text-sm font-bold uppercase tracking-widest hover:text-gold transition-colors"
+                    href="contact.html">Contact</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <a href="shop.html"
+                    class="hidden sm:inline-block bg-primary text-white px-6 py-2.5 rounded-none text-xs font-bold tracking-widest hover:bg-primary/95 transition-all outline-none">
+                    SHOP NOW
+                </a>
+                <button onclick="toggleMobileNav()"
+                    class="lg:hidden ml-4 text-primary hover:text-gold transition-colors z-50 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-3xl">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main>
+        <!-- Hero Story Section -->
+        <section class="max-w-7xl mx-auto px-6 lg:px-10 py-20 lg:py-32">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-8">
+                    <span class="text-gold font-bold tracking-[0.2em] text-[10px] uppercase">Est. 1984</span>
+                    <h2 class="text-5xl lg:text-7xl font-display font-bold leading-[1.1] tracking-tight">
+                        Rooted in Integrity, <br />
+                        <span class="italic text-primary/80">Grown with Passion.</span>
+                    </h2>
+                    <div
+                        class="space-y-6 text-slate-600 dark:text-slate-400 text-lg leading-relaxed max-w-xl font-light">
+                        <p>
+                            For four decades, Cedoka Farms has been more than just a plot of land; it has been a
+                            sanctuary for purity. What began as a humble ten-acre family endeavor by Elias Cedoka has
+                            blossomed into a global benchmark for regenerative agriculture.
+                        </p>
+                        <p>
+                            Our philosophy is simple: we do not inherit the earth from our ancestors, we borrow it from
+                            our children. This guiding light ensures every seed we plant and every harvest we share is a
+                            testament to our commitment to the soil and the soul.
+                        </p>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="aspect-[4/5] overflow-hidden bg-primary/5">
+                        <img alt="Our Founder" class="w-full h-full object-cover"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCShRvvfbyxD3hZPLAvYNM8JR0kQe7gAVJvbgXR3wQL-m5-ZHhcc76lOhiEWybjBiqMkqa-NFEMtPl9co_vRfsryoky0nX0jn9gvbwHn_L-UnR_23e7Xnx0EaBJhMb88LmoWOBcFyVuWR_Cu8nfzMCYgtCnAnaQIILqmjO5g3CKOyBLx4jKjx4ZP2VdwivTZaHeDbfvqHGRQC9764fqk4_-6E9eQZTm9nli5_RPctkZqCWLn6mdWMyCsYGBxDO9iwy6lRTeKKCJCT0" />
+                    </div>
+                    <div class="absolute -bottom-10 -left-10 bg-primary p-12 text-white hidden xl:block max-w-sm">
+                        <p class="font-display italic text-2xl leading-relaxed">"Nature doesn't hurry, yet everything is
+                            accomplished."</p>
+                        <p class="mt-6 text-[10px] tracking-[0.2em] uppercase font-bold text-gold">— Elias Cedoka,
+                            Founder</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Mission & Vision Section -->
+        <section class="bg-primary py-24 lg:py-40 text-white overflow-hidden">
+            <div class="max-w-7xl mx-auto px-6 lg:px-10">
+                <div class="grid lg:grid-cols-2 gap-24 items-center">
+                    <div class="relative aspect-square lg:aspect-auto lg:h-[700px]">
+                        <img alt="Cedoka Valey"
+                            class="w-full h-full object-cover grayscale opacity-60 mix-blend-luminosity"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuNxO0sQHk_YwJZSpssJDkYHkAWlAXvxCz65t9fbLDNXasPsZhDJPCSA01uJ7p6vrt3s1hns6s_dMEjZkbPtoJkHSMvKlTYZLU4-h9fMzrxqfzX9qY5Apk4JVbrNOV-L3RECl0vuVAxec4_Yz6h98cSfMXfyDZRLUd6nHBo_BFV_xkLf5bP6lKx6MM-lSv6rJd4lPrvLCbkDw4leoDBZMVvkZeLt4Of8VR-z1kndIMD2Wg9SaXogpAtnn4UzAaUSVxtQQes2w_cpw" />
+                        <div class="absolute inset-0 border border-gold/20 m-8"></div>
+                    </div>
+                    <div class="space-y-20">
+                        <div class="space-y-6">
+                            <span class="text-gold font-bold tracking-[0.2em] text-[10px] uppercase">Our Mission</span>
+                            <h3 class="text-4xl lg:text-5xl font-display font-bold tracking-tight">To reconnect humanity
+                                with the honesty of nature.</h3>
+                            <p class="text-slate-300 text-lg leading-relaxed font-light">
+                                We strive to provide the most nutrient-dense, chemical-free produce on the planet while
+                                actively restoring the biodiversity of our regional ecosystems through conscious,
+                                regenerative farming methods.
+                            </p>
+                        </div>
+                        <div class="w-24 h-px bg-gold/30"></div>
+                        <div class="space-y-6">
+                            <span class="text-gold font-bold tracking-[0.2em] text-[10px] uppercase">Our Vision</span>
+                            <h3 class="text-4xl lg:text-5xl font-display font-bold tracking-tight">A world where
+                                agriculture heals the planet.</h3>
+                            <p class="text-slate-300 text-lg leading-relaxed font-light">
+                                We envision a future where organic scaling doesn't sacrifice quality, and where local
+                                communities thrive on the bounty of land that is treated with the reverence it deserves.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Narrative Timeline -->
+        <section class="max-w-7xl mx-auto px-6 lg:px-10 py-24 lg:py-40">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-24">
+                    <span class="text-gold font-bold tracking-[0.2em] text-[10px] uppercase">Heritage</span>
+                    <h2 class="text-4xl lg:text-6xl font-display font-bold mt-4">The Cedoka Chronicle</h2>
+                </div>
+                <div class="relative space-y-24">
+                    <div class="timeline-line"></div>
+                    <div class="relative pl-16">
+                        <div
+                            class="absolute left-0 top-2 size-10 rounded-full bg-white border border-gold flex items-center justify-center z-10">
+                            <div class="size-2 bg-primary"></div>
+                        </div>
+                        <span class="text-gold font-bold text-sm tracking-widest">1984</span>
+                        <h4 class="text-2xl font-display font-bold mt-2">The First Seed</h4>
+                        <p class="text-slate-600 dark:text-slate-400 mt-4 leading-relaxed font-light">
+                            Elias Cedoka acquires ten acres in the valley. Amidst a decade of industrial farming, he
+                            chooses the difficult path of heirloom seeds and natural pest management, founding what
+                            would become a revolution in taste and health.
+                        </p>
+                    </div>
+                    <div class="relative pl-16">
+                        <div
+                            class="absolute left-0 top-2 size-10 rounded-full bg-white border border-gold flex items-center justify-center z-10">
+                            <div class="size-2 bg-primary"></div>
+                        </div>
+                        <span class="text-gold font-bold text-sm tracking-widest">1995</span>
+                        <h4 class="text-2xl font-display font-bold mt-2">Sustainable Scaling</h4>
+                        <p class="text-slate-600 dark:text-slate-400 mt-4 leading-relaxed font-light">
+                            The farm expands to 200 acres. Despite the growth, Elias refuses automation that might
+                            compromise the soil structure. We introduce advanced crop rotation and bio-dynamic
+                            composting systems that remain in use today.
+                        </p>
+                    </div>
+                    <div class="relative pl-16">
+                        <div
+                            class="absolute left-0 top-2 size-10 rounded-full bg-white border border-gold flex items-center justify-center z-10">
+                            <div class="size-2 bg-primary"></div>
+                        </div>
+                        <span class="text-gold font-bold text-sm tracking-widest">2010</span>
+                        <h4 class="text-2xl font-display font-bold mt-2">Certified Excellence</h4>
+                        <p class="text-slate-600 dark:text-slate-400 mt-4 leading-relaxed font-light">
+                            Cedoka Farms becomes the first in the region to achieve Triple-Organic Certification. Our
+                            methods are studied by agricultural scientists as a blueprint for sustainable commercial
+                            farming at scale.
+                        </p>
+                    </div>
+                    <div class="relative pl-16">
+                        <div
+                            class="absolute left-0 top-2 size-10 rounded-full bg-white border border-gold flex items-center justify-center z-10">
+                            <div class="size-2 bg-primary"></div>
+                        </div>
+                        <span class="text-gold font-bold text-sm tracking-widest text-primary">PRESENT</span>
+                        <h4 class="text-2xl font-display font-bold mt-2">A Global Legacy</h4>
+                        <p class="text-slate-600 dark:text-slate-400 mt-4 leading-relaxed font-light">
+                            Today, Cedoka Farms reaches over 15 countries. While our reach is global, our hands are
+                            still in the dirt of the Cedoka Valley, ensuring every piece of produce carries the same
+                            integrity established forty years ago.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Image Gallery Section -->
+        <section class="max-w-7xl mx-auto px-6 lg:px-10 py-24 mb-10 border-t border-slate-200 dark:border-slate-800">
+            <div class="text-center mb-16">
+                <span class="text-gold font-bold tracking-[0.2em] text-[10px] uppercase">The Life At</span>
+                <h2 class="text-4xl lg:text-5xl font-display font-bold mt-4">Cedoka Farms Gallery</h2>
+            </div>
+            <div class="relative w-full max-w-5xl mx-auto overflow-hidden rounded-xl group" id="gallery-slider">
+                <div class="flex transition-transform duration-500 ease-in-out w-[100%]" id="gallery-track">
+                    <div class="w-full shrink-0 px-2 lg:px-4 hidden lg:block" style="flex: 0 0 33.333%;"></div>
+                    <!-- placeholder for spacing if needed -->
+                    <!-- Slide 1 -->
+                    <div class="w-full shrink-0 px-2 md:w-1/2 lg:w-1/3">
+                        <img src="https://images.unsplash.com/photo-1592424005872-9b0d625bc20e?q=80&w=800&auto=format&fit=crop"
+                            class="w-full h-80 object-cover rounded-xl shadow-md" alt="Farm Operations" />
+                    </div>
+                    <!-- Slide 2 -->
+                    <div class="w-full shrink-0 px-2 md:w-1/2 lg:w-1/3">
+                        <img src="https://images.unsplash.com/photo-1516467508483-a7212febe31a?q=80&w=800&auto=format&fit=crop"
+                            class="w-full h-80 object-cover rounded-xl shadow-md" alt="Livestock" />
+                    </div>
+                    <!-- Slide 3 -->
+                    <div class="w-full shrink-0 px-2 md:w-1/2 lg:w-1/3">
+                        <img src="https://images.unsplash.com/photo-1524024973431-2ad916746881?q=80&w=800&auto=format&fit=crop"
+                            class="w-full h-80 object-cover rounded-xl shadow-md" alt="Greenhouse" />
+                    </div>
+                    <!-- Slide 4 -->
+                    <div class="w-full shrink-0 px-2 md:w-1/2 lg:w-1/3">
+                        <img src="https://images.unsplash.com/photo-1598912253018-7b9c9f2b84ef?q=80&w=800&auto=format&fit=crop"
+                            class="w-full h-80 object-cover rounded-xl shadow-md" alt="Seedlings" />
+                    </div>
+                    <!-- Slide 5 -->
+                    <div class="w-full shrink-0 px-2 md:w-1/2 lg:w-1/3">
+                        <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=800&auto=format&fit=crop"
+                            class="w-full h-80 object-cover rounded-xl shadow-md" alt="Farm Harvest" />
+                    </div>
+                    <!-- Slide 6 -->
+                    <div class="w-full shrink-0 px-2 md:w-1/2 lg:w-1/3">
+                        <img src="https://images.unsplash.com/photo-1601362840469-51e4d8d58785?q=80&w=800&auto=format&fit=crop"
+                            class="w-full h-80 object-cover rounded-xl shadow-md" alt="Care" />
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <button id="slider-prev" onclick="moveGallery(-1)"
+                    class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 dark:bg-black/60 text-primary dark:text-gold p-3 rounded-full shadow-lg opacity-80 hover:opacity-100 backdrop-blur-sm transition-all focus:outline-none z-10 hidden sm:flex items-center justify-center">
+                    <span class="material-symbols-outlined font-bold">chevron_left</span>
+                </button>
+                <button id="slider-next" onclick="moveGallery(1)"
+                    class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 dark:bg-black/60 text-primary dark:text-gold p-3 rounded-full shadow-lg opacity-80 hover:opacity-100 backdrop-blur-sm transition-all focus:outline-none z-10 hidden sm:flex items-center justify-center">
+                    <span class="material-symbols-outlined font-bold">chevron_right</span>
+                </button>
+            </div>
+
+            <script>
+                let currentSlide = 0;
+                function moveGallery(direction) {
+                    const track = document.getElementById('gallery-track');
+                    if (!track) return;
+
+                    const itemWidth = track.children[1].offsetWidth; // using slide 1 width 
+                    const totalItems = track.children.length - 1; // excluding placeholder
+
+                    const itemsInView = window.innerWidth >= 1024 ? 3 : (window.innerWidth >= 768 ? 2 : 1);
+
+                    // Always make it correctly sized on mobile
+                    if (window.innerWidth < 768) {
+                        track.children[0].style.display = 'none'; // hide placeholder completely on mobile
+                    } else {
+                        track.children[0].style.display = 'block';
+                    }
+
+                    const maxSlide = track.children.length - itemsInView - (window.innerWidth >= 1024 ? 1 : 0);
+
+                    currentSlide += direction;
+                    if (currentSlide < 0) currentSlide = 0;
+                    if (currentSlide > maxSlide) currentSlide = maxSlide;
+
+                    track.style.transform = `translateX(-${currentSlide * itemWidth}px)`;
+                }
+
+                // Optional: Recalculate on window resize to mostly prevent overflowing into empty space
+                window.addEventListener('resize', () => {
+                    currentSlide = 0;
+                    moveGallery(0);
+                });
+
+                // Initialize
+                document.addEventListener('DOMContentLoaded', () => { moveGallery(0); });
+            </script>
+        </section>
+        <!-- Certifications Section -->
+        <section class="bg-slate-50 dark:bg-slate-900/50 py-24">
+            <div class="max-w-7xl mx-auto px-6 lg:px-10">
+                <div class="flex flex-col lg:flex-row gap-16 items-center">
+                    <div class="lg:w-1/3">
+                        <h3 class="text-3xl font-display font-bold mb-6">Uncompromising Standards</h3>
+                        <p class="text-slate-500 font-light leading-relaxed">
+                            Our commitment is verified by the world's most rigorous agricultural and ethical standards.
+                        </p>
+                    </div>
+                    <div class="lg:w-2/3 grid grid-cols-2 md:grid-cols-4 gap-8">
+                        <div
+                            class="bg-white dark:bg-slate-800 p-8 flex flex-col items-center text-center group hover:border-gold transition-colors border border-transparent">
+                            <span
+                                class="material-symbols-outlined text-primary text-4xl mb-4 group-hover:text-gold transition-colors">eco</span>
+                            <span class="text-[10px] font-bold uppercase tracking-widest">100% Organic</span>
+                        </div>
+                        <div
+                            class="bg-white dark:bg-slate-800 p-8 flex flex-col items-center text-center group hover:border-gold transition-colors border border-transparent">
+                            <span
+                                class="material-symbols-outlined text-primary text-4xl mb-4 group-hover:text-gold transition-colors">handshake</span>
+                            <span class="text-[10px] font-bold uppercase tracking-widest">Fair Trade Gold</span>
+                        </div>
+                        <div
+                            class="bg-white dark:bg-slate-800 p-8 flex flex-col items-center text-center group hover:border-gold transition-colors border border-transparent">
+                            <span
+                                class="material-symbols-outlined text-primary text-4xl mb-4 group-hover:text-gold transition-colors">water_drop</span>
+                            <span class="text-[10px] font-bold uppercase tracking-widest">Water Wise</span>
+                        </div>
+                        <div
+                            class="bg-white dark:bg-slate-800 p-8 flex flex-col items-center text-center group hover:border-gold transition-colors border border-transparent">
+                            <span
+                                class="material-symbols-outlined text-primary text-4xl mb-4 group-hover:text-gold transition-colors">public</span>
+                            <span class="text-[10px] font-bold uppercase tracking-widest">Climate Neutral</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-primary text-white pt-24 pb-12 mt-0">
+        <div class="max-w-7xl mx-auto px-6 lg:px-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16">
+            <div class="space-y-8">
+                <div class="flex items-center gap-3">
+                    <img src="assets/logo.png" alt="Cedoka Farms"
+                        class="h-10 w-auto object-contain brightness-0 invert" />
+                </div>
+                <div class="flex gap-2 items-center text-white mt-4 font-sans">
+                    <span class="material-symbols-outlined text-gold">location_on</span>
+                    <p class="text-sm font-bold">Awka, Nigeria</p>
+                </div>
+                <p class="text-slate-300 text-[13px] leading-relaxed max-w-xs font-light">
+                    Cultivating a future of purity through regenerative practices. Sustainable agriculture for a
+                    healthier world, since 1984.
+                </p>
+                <div class="flex gap-6">
+                    <a class="text-white/60 hover:text-gold transition-colors" href="#"><span
+                            class="material-symbols-outlined text-xl">public</span></a>
+                    <a class="text-white/60 hover:text-gold transition-colors" href="#"><span
+                            class="material-symbols-outlined text-xl">mail</span></a>
+                </div>
+            </div>
+            <div>
+                <h3 class="font-bold mb-8 text-[11px] tracking-[0.2em] uppercase text-gold">Explore</h3>
+                <ul class="space-y-4 text-slate-300 text-[13px] font-light">
+                    <li><a class="hover:text-white transition-colors" href="#">About Our Story</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">Regenerative Methods</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">Wholesale Partnership</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">Sustainability Impact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-bold mb-8 text-[11px] tracking-[0.2em] uppercase text-gold">Service</h3>
+                <ul class="space-y-4 text-slate-300 text-[13px] font-light">
+                    <li><a class="hover:text-white transition-colors" href="#">Shipping Logistics</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">Quality Assurance</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">Support Center</a></li>
+                    <li><a class="hover:text-white transition-colors" href="#">Farm Tours</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-bold mb-8 text-[11px] tracking-[0.2em] uppercase text-gold">The Journal</h3>
+                <p class="text-slate-300 text-[13px] mb-6 font-light leading-relaxed">Subscribe for harvest updates and
+                    seasonal wisdom.</p>
+                <div class="space-y-3">
+                    <input
+                        class="w-full bg-white/5 border border-white/10 px-4 py-3 text-[13px] focus:ring-1 focus:ring-gold focus:border-gold outline-none placeholder:text-white/20"
+                        placeholder="Email Address" type="email" />
+                    <button
+                        class="w-full bg-white text-primary font-bold py-3 text-[11px] tracking-[0.2em] uppercase hover:bg-gold hover:text-white transition-all">
+                        SUBSCRIBE
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div
+            class="max-w-7xl mx-auto px-6 lg:px-10 mt-24 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] tracking-[0.1em] text-white/30 uppercase font-medium">
+            <p>© 2026 Cedoka Farms Agriculture Ltd.</p>
+            <div class="flex gap-10">
+                <a class="hover:text-white transition-colors" href="#">Privacy</a>
+                <a class="hover:text-white transition-colors" href="#">Terms</a>
+                <a class="hover:text-white transition-colors" href="#">Accessibility</a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

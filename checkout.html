@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="description"
+        content="Checkout - Cedoka Farms. Complete your order for fresh, organic produce from Ota, Ogun State, Nigeria." />
+    <title>Checkout | Cedoka Farms</title>
+    <style>
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background-color: #f6f8f7;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.4s ease;
+        }
+
+        #preloader img {
+            width: 110px;
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.08);
+            }
+        }
+
+        /* Step indicator */
+        .step-dot {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .step-dot.active {
+            background-color: #0a3d2e;
+            color: white;
+        }
+
+        .step-dot.done {
+            background-color: #d4af37;
+            color: #0a3d2e;
+        }
+
+        .step-dot.pending {
+            background-color: #e2e8f0;
+            color: #94a3b8;
+        }
+
+        .step-line {
+            flex: 1;
+            height: 2px;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Payment tab */
+        .pay-tab {
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .pay-tab.active {
+            border-bottom-color: #0a3d2e;
+            color: #0a3d2e;
+            font-weight: 800;
+        }
+
+        /* Success overlay */
+        #success-overlay {
+            display: none;
+        }
+
+        #success-overlay.show {
+            display: flex;
+        }
+
+        /* Input focus */
+        .cf-input {
+            width: 100%;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 0.875rem 1rem;
+            font-size: 0.875rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: white;
+        }
+
+        .cf-input:focus {
+            border-color: #0a3d2e;
+            box-shadow: 0 0 0 3px rgba(10, 61, 46, 0.08);
+        }
+
+        .cf-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 0.375rem;
+            display: block;
+        }
+
+        select.cf-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230a3d2e'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1rem;
+            padding-right: 2.5rem;
+        }
+    </style>
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => { const p = document.getElementById('preloader'); if (p) { p.style.opacity = '0'; setTimeout(() => p.style.display = 'none', 400); } }, 200);
+        });
+        function toggleMobileNav() { const nav = document.getElementById('mobile-nav'); if (nav) nav.classList.toggle('translate-x-full'); }
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0a3d2e",
+                        "gold": "#d4af37",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#12201c",
+                    },
+                    fontFamily: { "display": ["Inter", "sans-serif"] },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background-light font-display text-slate-900 antialiased min-h-screen">
+    <div id="preloader">
+        <img src="assets/logo.png" alt="Cedoka Farms Logo" />
+    </div>
+
+    <!-- Order Success Overlay -->
+    <div id="success-overlay"
+        class="fixed inset-0 z-[500] bg-white flex-col items-center justify-center text-center px-6">
+        <div class="max-w-md mx-auto">
+            <div
+                class="w-24 h-24 bg-primary rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-primary/30">
+                <span class="material-symbols-outlined text-5xl text-gold">check</span>
+            </div>
+            <h1 class="text-4xl font-black text-primary mb-3">Order Placed!</h1>
+            <p class="text-slate-500 mb-2">Thank you for your order with Cedoka Farms.</p>
+            <p class="text-slate-400 text-sm mb-8">A confirmation will be sent to your email. We'll prepare your fresh
+                produce immediately.</p>
+            <div class="bg-primary/5 rounded-xl p-6 mb-8 text-left">
+                <p class="text-xs text-primary/60 uppercase font-bold tracking-widest mb-2">Order Reference</p>
+                <p id="order-ref" class="text-2xl font-black text-primary">#CF-2026-0001</p>
+            </div>
+            <a href="shop.html"
+                class="inline-block bg-primary text-white px-10 py-4 rounded-xl font-bold tracking-widest hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
+                Continue Shopping
+            </a>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-nav"
+        class="fixed inset-0 z-[100] bg-white/95 backdrop-blur-md transform translate-x-full transition-transform duration-300 flex flex-col pt-24 px-6 pb-10 overflow-y-auto lg:hidden">
+        <button onclick="toggleMobileNav()"
+            class="absolute top-6 right-6 text-primary hover:text-gold transition-colors">
+            <span class="material-symbols-outlined text-4xl">close</span>
+        </button>
+        <nav class="flex flex-col gap-6 items-center">
+            <a class="text-primary/70 text-2xl font-bold uppercase tracking-widest hover:text-gold"
+                href="index.html">Home</a>
+            <a class="text-primary/70 text-2xl font-bold uppercase tracking-widest hover:text-gold"
+                href="about.html">About</a>
+            <a class="text-primary/70 text-2xl font-bold uppercase tracking-widest hover:text-gold"
+                href="contact.html">Contact</a>
+        </nav>
+        <div class="mt-auto pt-10 text-center text-primary/70 flex flex-col items-center gap-2">
+            <span class="material-symbols-outlined text-gold">location_on</span>
+            <p class="font-bold">Ota, Ogun State, Nigeria</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header
+        class="sticky top-0 z-50 w-full border-b border-primary/10 bg-white/95 backdrop-blur-md px-6 md:px-10 lg:px-20 py-4">
+        <div class="mx-auto flex max-w-7xl items-center justify-between gap-8">
+            <a href="index.html" class="flex items-center gap-2 z-50 relative shrink-0">
+                <img src="assets/logo.png" alt="Cedoka Farms" class="h-10 md:h-12 w-auto object-contain" />
+            </a>
+            <nav class="hidden lg:flex items-center gap-10">
+                <a class="text-primary/70 text-sm font-bold uppercase tracking-widest hover:text-gold transition-colors"
+                    href="index.html">Home</a>
+                <a class="text-primary/70 text-sm font-bold uppercase tracking-widest hover:text-gold transition-colors"
+                    href="about.html">About</a>
+                <a class="text-primary text-sm font-black uppercase tracking-widest hover:text-gold transition-colors"
+                    href="shop.html">Shop</a>
+                <a class="text-primary/70 text-sm font-bold uppercase tracking-widest hover:text-gold transition-colors"
+                    href="contact.html">Contact</a>
+            </nav>
+            <div class="flex items-center gap-3">
+                <a href="shop.html"
+                    class="hidden sm:flex items-center gap-2 text-primary hover:text-gold transition-colors text-sm font-bold">
+                    <span class="material-symbols-outlined text-xl">shopping_cart</span>
+                    <span id="header-cart-count"
+                        class="bg-gold text-primary text-xs font-black px-2 py-0.5 rounded-full hidden">0</span>
+                </a>
+                <button onclick="toggleMobileNav()"
+                    class="lg:hidden ml-2 text-primary hover:text-gold transition-colors z-50">
+                    <span class="material-symbols-outlined text-3xl">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div class="flex items-center gap-2 text-sm text-primary/50 font-medium">
+            <a href="index.html" class="hover:text-primary transition-colors">Home</a>
+            <span class="material-symbols-outlined text-xs">chevron_right</span>
+            <a href="shop.html" class="hover:text-primary transition-colors">Shop</a>
+            <span class="material-symbols-outlined text-xs">chevron_right</span>
+            <span class="text-primary font-bold">Checkout</span>
+        </div>
+    </div>
+
+    <!-- Return to Shop -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2">
+        <a href="shop.html"
+            class="inline-flex items-center gap-2 text-primary hover:text-gold transition-colors font-bold text-sm group">
+            <span class="material-symbols-outlined text-lg group-hover:-translate-x-1 transition-transform">arrow_back</span>
+            Continue Shopping
+        </a>
+    </div>
+
+    <!-- Main checkout area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+        <!-- Step Indicator -->
+        <div class="flex items-center mb-10 max-w-lg mx-auto lg:mx-0">
+            <div id="step1-dot" class="step-dot active">1</div>
+            <div id="step1-2-line" class="step-line bg-primary/10"></div>
+            <div id="step2-dot" class="step-dot pending">2</div>
+            <div id="step2-3-line" class="step-line bg-primary/10"></div>
+            <div id="step3-dot" class="step-dot pending">3</div>
+        </div>
+        <div class="flex justify-between max-w-lg mb-10 mx-auto lg:mx-0">
+            <span class="text-[10px] font-black uppercase tracking-widest text-primary">Shipping</span>
+            <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Payment</span>
+            <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Review</span>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-12 items-start">
+
+            <!-- LEFT: Checkout Steps -->
+            <div class="flex-1 space-y-8">
+
+                <!-- STEP 1: Shipping -->
+                <div id="step-1" class="bg-white rounded-2xl border border-primary/10 shadow-sm p-8">
+                    <div class="flex items-center gap-3 mb-8">
+                        <span
+                            class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold shrink-0">1</span>
+                        <h2 class="text-xl font-black text-primary">Shipping Address</h2>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div>
+                            <label class="cf-label">First Name *</label>
+                            <input id="first-name" class="cf-input" type="text" placeholder="e.g. Emeka" />
+                        </div>
+                        <div>
+                            <label class="cf-label">Last Name *</label>
+                            <input id="last-name" class="cf-input" type="text" placeholder="e.g. Okonkwo" />
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="cf-label">Email Address *</label>
+                            <input id="email" class="cf-input" type="email" placeholder="emeka@example.com" />
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="cf-label">Phone Number *</label>
+                            <input id="phone" class="cf-input" type="tel" placeholder="+234 800 000 0000" />
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="cf-label">Street Address *</label>
+                            <input id="street" class="cf-input" type="text" placeholder="House No. &amp; Street Name" />
+                        </div>
+                        <div>
+                            <label class="cf-label">City *</label>
+                            <input id="city" class="cf-input" type="text" placeholder="e.g. Ota" />
+                        </div>
+                        <div>
+                            <label class="cf-label">State *</label>
+                            <select id="state" class="cf-input">
+                                <option value="">Select State</option>
+                                <option value="Ogun">Ogun State</option>
+                                <option value="Lagos">Lagos State</option>
+                                <option value="Abuja">FCT Abuja</option>
+                                <option value="Oyo">Oyo State</option>
+                                <option value="Anambra">Anambra State</option>
+                                <option value="Rivers">Rivers State</option>
+                                <option value="Kano">Kano State</option>
+                                <option value="Kaduna">Kaduna State</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Method -->
+                    <h3 class="font-black text-primary uppercase tracking-wider text-sm mt-8 mb-4">Delivery Method</h3>
+                    <div class="space-y-3">
+                        <label
+                            class="flex items-center justify-between p-4 border-2 border-primary/20 rounded-xl cursor-pointer hover:border-primary transition-all has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+                            <div class="flex items-center gap-3">
+                                <input type="radio" name="delivery" value="standard" class="accent-primary" checked />
+                                <div>
+                                    <p class="font-bold text-primary text-sm">Standard Delivery</p>
+                                    <p class="text-xs text-slate-400">3–5 business days</p>
+                                </div>
+                            </div>
+                            <span class="font-black text-primary">₦1,500</span>
+                        </label>
+                        <label
+                            class="flex items-center justify-between p-4 border-2 border-primary/20 rounded-xl cursor-pointer hover:border-primary transition-all has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+                            <div class="flex items-center gap-3">
+                                <input type="radio" name="delivery" value="express" class="accent-primary" />
+                                <div>
+                                    <p class="font-bold text-primary text-sm">Express Farm-to-Door</p>
+                                    <p class="text-xs text-slate-400">Next business morning</p>
+                                </div>
+                            </div>
+                            <span class="font-black text-primary">₦4,500</span>
+                        </label>
+                        <label
+                            class="flex items-center justify-between p-4 border-2 border-primary/20 rounded-xl cursor-pointer hover:border-primary transition-all has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+                            <div class="flex items-center gap-3">
+                                <input type="radio" name="delivery" value="pickup" class="accent-primary" />
+                                <div>
+                                    <p class="font-bold text-primary text-sm">Self Pickup – Ota HQ</p>
+                                    <p class="text-xs text-slate-400">Free – collect at farm</p>
+                                </div>
+                            </div>
+                            <span class="font-black text-green-600">FREE</span>
+                        </label>
+                    </div>
+
+                    <button onclick="goToStep(2)"
+                        class="mt-8 w-full bg-primary text-white py-4 rounded-xl font-bold tracking-widest uppercase text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
+                        Continue to Payment
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
+                </div>
+
+                <!-- STEP 2: Payment (hidden initially) -->
+                <div id="step-2" class="bg-white rounded-2xl border border-primary/10 shadow-sm p-8 hidden">
+                    <div class="flex items-center justify-between mb-8">
+                        <div class="flex items-center gap-3">
+                            <span
+                                class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold shrink-0">2</span>
+                            <h2 class="text-xl font-black text-primary">Payment</h2>
+                        </div>
+                        <button onclick="goToStep(1)"
+                            class="text-xs font-bold text-primary/50 hover:text-primary transition-colors flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">arrow_back</span> Back
+                        </button>
+                    </div>
+
+                    <!-- Payment Tabs -->
+                    <div class="flex border-b border-primary/10 mb-6 gap-1">
+                        <button id="tab-card" onclick="switchPayTab('card')"
+                            class="pay-tab active px-6 py-3 text-sm font-bold text-slate-500 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">credit_card</span> Card
+                        </button>
+                        <button id="tab-transfer" onclick="switchPayTab('transfer')"
+                            class="pay-tab px-6 py-3 text-sm font-bold text-slate-500 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">account_balance</span> Bank Transfer
+                        </button>
+                        <button id="tab-crypto" onclick="switchPayTab('crypto')"
+                            class="pay-tab px-6 py-3 text-sm font-bold text-slate-500 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">currency_bitcoin</span> Crypto
+                        </button>
+                    </div>
+
+                    <!-- Card Panel -->
+                    <div id="panel-card" class="space-y-5">
+                        <div>
+                            <label class="cf-label">Card Number *</label>
+                            <div class="relative">
+                                <input id="card-num" class="cf-input pl-12" type="text"
+                                    placeholder="0000  0000  0000  0000" maxlength="19"
+                                    oninput="formatCardNumber(this)" />
+                                <span
+                                    class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400">payments</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="cf-label">Cardholder Name *</label>
+                            <input id="card-name" class="cf-input" type="text" placeholder="Name as on card" />
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="cf-label">Expiry Date *</label>
+                                <input id="card-exp" class="cf-input text-center" type="text" placeholder="MM / YY"
+                                    maxlength="7" oninput="formatExpiry(this)" />
+                            </div>
+                            <div>
+                                <label class="cf-label">CVV *</label>
+                                <div class="relative">
+                                    <input id="card-cvv" class="cf-input text-center pr-10" type="password"
+                                        placeholder="•••" maxlength="4" />
+                                    <span
+                                        class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 text-sm cursor-pointer"
+                                        onclick="toggleCvv()">visibility</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-4 bg-primary/5 rounded-xl border border-primary/10">
+                            <span class="material-symbols-outlined text-primary">lock</span>
+                            <p class="text-xs text-primary/70 font-medium">Your payment is secured with 256-bit SSL
+                                encryption.</p>
+                        </div>
+                    </div>
+
+                    <!-- Bank Transfer Panel -->
+                    <div id="panel-transfer" class="hidden space-y-4">
+                        <div class="bg-primary/5 rounded-xl p-6 border border-primary/10">
+                            <h4 class="font-black text-primary mb-4 uppercase tracking-widest text-xs">Bank Account
+                                Details</h4>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between"><span
+                                        class="text-slate-500 font-medium">Bank</span><span
+                                        class="font-bold text-primary">First Bank of Nigeria</span></div>
+                                <div class="flex justify-between"><span class="text-slate-500 font-medium">Account
+                                        Name</span><span class="font-bold text-primary">Cedoka Farms Ltd</span></div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-slate-500 font-medium">Account No.</span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="font-black text-primary text-lg tracking-widest">3012345678</span>
+                                        <button onclick="copyAccNum()"
+                                            class="text-gold hover:text-primary transition-colors" title="Copy">
+                                            <span class="material-symbols-outlined text-sm">content_copy</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-400 leading-relaxed">After transferring, use your order reference
+                            as narration. Your order will be confirmed once payment is verified (within 30 minutes on
+                            business days).</p>
+                        <div>
+                            <label class="cf-label">Transfer Proof / Reference</label>
+                            <input class="cf-input" type="text" placeholder="e.g. TRF2026001234 or Bank ref" />
+                        </div>
+                    </div>
+
+                    <!-- Crypto Panel -->
+                    <div id="panel-crypto" class="hidden space-y-4">
+                        <div class="bg-primary/5 rounded-xl p-6 border border-primary/10">
+                            <h4 class="font-black text-primary mb-4 uppercase tracking-widest text-xs">Crypto Payment
+                            </h4>
+                            <p class="text-sm text-slate-500 mb-4">We accept USDT (TRC-20 network). Send to the wallet
+                                below:</p>
+                            <div
+                                class="flex items-center justify-between gap-4 bg-white p-4 rounded-xl border border-primary/10">
+                                <p class="font-mono text-xs text-primary break-all">TLbxHNCEdXpBqQaHSqHN4aBzL4mKG9Lcxd
+                                </p>
+                                <button onclick="copyCrypto()" class="shrink-0 text-gold hover:text-primary">
+                                    <span class="material-symbols-outlined">content_copy</span>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-400 leading-relaxed">Send the exact amount in USDT. Orders are
+                            processed after 1 confirmed blockchain transaction.</p>
+                        <div>
+                            <label class="cf-label">Transaction Hash *</label>
+                            <input class="cf-input" type="text" placeholder="e.g. 0xabc123..." />
+                        </div>
+                    </div>
+
+                    <button onclick="goToStep(3)"
+                        class="mt-8 w-full bg-primary text-white py-4 rounded-xl font-bold tracking-widest uppercase text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
+                        Review Order
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
+                </div>
+
+                <!-- STEP 3: Review (hidden initially) -->
+                <div id="step-3" class="bg-white rounded-2xl border border-primary/10 shadow-sm p-8 hidden">
+                    <div class="flex items-center justify-between mb-8">
+                        <div class="flex items-center gap-3">
+                            <span
+                                class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold shrink-0">3</span>
+                            <h2 class="text-xl font-black text-primary">Review &amp; Confirm</h2>
+                        </div>
+                        <button onclick="goToStep(2)"
+                            class="text-xs font-bold text-primary/50 hover:text-primary transition-colors flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">arrow_back</span> Back
+                        </button>
+                    </div>
+
+                    <!-- Shipping Summary -->
+                    <div class="mb-6">
+                        <h3 class="text-xs font-black uppercase tracking-widest text-gold mb-3">Shipping To</h3>
+                        <div id="review-address"
+                            class="text-sm text-slate-600 leading-relaxed bg-slate-50 rounded-xl p-4 border border-slate-100">
+                        </div>
+                    </div>
+
+                    <!-- Items Summary -->
+                    <div class="mb-6">
+                        <h3 class="text-xs font-black uppercase tracking-widest text-gold mb-3">Order Items</h3>
+                        <div id="review-items" class="space-y-3"></div>
+                    </div>
+
+                    <!-- Totals -->
+                    <div class="border-t border-primary/10 pt-6 space-y-2">
+                        <div class="flex justify-between text-sm text-slate-500"><span>Subtotal</span><span
+                                id="rev-subtotal">₦0.00</span></div>
+                        <div class="flex justify-between text-sm text-slate-500"><span>Delivery</span><span
+                                id="rev-delivery">₦1,500</span></div>
+                        <div
+                            class="flex justify-between text-xl font-black text-primary pt-2 border-t border-primary/10 mt-2">
+                            <span>Total</span><span id="rev-total">₦0.00</span></div>
+                    </div>
+
+                    <div class="mt-6 flex items-start gap-3">
+                        <input type="checkbox" id="agree-terms" class="mt-0.5 rounded accent-primary" />
+                        <label for="agree-terms" class="text-xs text-slate-500 leading-relaxed cursor-pointer">I agree
+                            to Cedoka Farms' <a href="#" class="text-primary font-bold hover:text-gold">Terms of
+                                Service</a> and <a href="#" class="text-primary font-bold hover:text-gold">Harvest
+                                Policy</a>.</label>
+                    </div>
+
+                    <button onclick="placeOrder()" id="place-order-btn"
+                        class="mt-8 w-full bg-gold text-primary py-5 rounded-xl font-black tracking-widest uppercase text-sm hover:bg-primary hover:text-white transition-all shadow-lg shadow-gold/30 flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined">shopping_bag</span>
+                        Place Order
+                    </button>
+                    <p class="text-center text-xs text-slate-400 mt-3">Secure checkout powered by Cedoka Farms.</p>
+                </div>
+
+            </div><!-- end left -->
+
+            <!-- RIGHT: Order Summary Sidebar -->
+            <div class="w-full lg:w-96 lg:sticky lg:top-28">
+                <div class="bg-white rounded-2xl border border-primary/10 shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="font-black text-primary uppercase tracking-widest text-sm">Order Summary</h3>
+                        <a href="shop.html"
+                            class="text-xs text-primary/50 hover:text-gold transition-colors font-bold flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">edit</span> Edit Cart
+                        </a>
+                    </div>
+
+                    <!-- Dynamic cart items -->
+                    <div id="summary-items" class="space-y-4 max-h-72 overflow-y-auto pr-1">
+                        <!-- Populated via JS -->
+                    </div>
+
+                    <!-- Empty state -->
+                    <div id="summary-empty" class="hidden text-center py-8">
+                        <span class="material-symbols-outlined text-4xl text-primary/20">shopping_cart</span>
+                        <p class="text-sm text-slate-400 mt-2">Your cart is empty.</p>
+                        <a href="shop.html"
+                            class="inline-block mt-4 text-xs font-bold text-primary hover:text-gold transition-colors">Browse
+                            Products →</a>
+                    </div>
+
+                    <div id="summary-totals" class="hidden border-t border-primary/10 pt-5 mt-5 space-y-2">
+                        <div class="flex justify-between text-sm text-slate-500">
+                            <span>Subtotal</span>
+                            <span id="sidebar-subtotal">₦0.00</span>
+                        </div>
+                        <div class="flex justify-between text-sm text-slate-500">
+                            <span>Delivery</span>
+                            <span id="sidebar-delivery">₦1,500</span>
+                        </div>
+                        <div
+                            class="flex justify-between font-black text-primary text-lg pt-2 border-t border-primary/10">
+                            <span>Total</span>
+                            <span id="sidebar-total">₦0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Trust badges -->
+                    <div class="mt-6 pt-5 border-t border-primary/10 grid grid-cols-3 gap-2 text-center">
+                        <div class="flex flex-col items-center gap-1">
+                            <span class="material-symbols-outlined text-primary text-lg">lock</span>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">Secure</p>
+                        </div>
+                        <div class="flex flex-col items-center gap-1">
+                            <span class="material-symbols-outlined text-primary text-lg">eco</span>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">Organic</p>
+                        </div>
+                        <div class="flex flex-col items-center gap-1">
+                            <span class="material-symbols-outlined text-primary text-lg">local_shipping</span>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">Fast Delivery</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- end flex -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-24 bg-primary text-white pt-20 pb-10 px-6 md:px-20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-white/10 pb-16">
+            <div class="space-y-6">
+                <img src="assets/logo.png" alt="Cedoka Farms" class="h-10 w-auto object-contain brightness-0 invert" />
+                <div class="flex gap-2 items-center text-white mt-2">
+                    <span class="material-symbols-outlined text-gold">location_on</span>
+                    <p class="text-sm font-bold">Ota, Ogun State, Nigeria</p>
+                </div>
+                <p class="text-white/60 text-sm leading-relaxed">Cultivating excellence through tradition and
+                    innovation.</p>
+            </div>
+            <div class="space-y-6">
+                <h4 class="text-gold font-bold text-xs uppercase tracking-widest">Navigate</h4>
+                <ul class="space-y-3 text-sm text-white/80">
+                    <li><a href="index.html" class="hover:text-gold transition-colors">Home</a></li>
+                    <li><a href="about.html" class="hover:text-gold transition-colors">About</a></li>
+                    <li><a href="shop.html" class="hover:text-gold transition-colors">Shop</a></li>
+                    <li><a href="contact.html" class="hover:text-gold transition-colors">Contact</a></li>
+                </ul>
+            </div>
+            <div class="space-y-6">
+                <h4 class="text-gold font-bold text-xs uppercase tracking-widest">Policies</h4>
+                <ul class="space-y-3 text-sm text-white/80">
+                    <li><a href="#" class="hover:text-gold transition-colors">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-gold transition-colors">Terms of Service</a></li>
+                    <li><a href="#" class="hover:text-gold transition-colors">Shipping &amp; Returns</a></li>
+                </ul>
+            </div>
+            <div class="space-y-6">
+                <h4 class="text-gold font-bold text-xs uppercase tracking-widest">Newsletter</h4>
+                <p class="text-sm text-white/60">Subscribe for harvest updates.</p>
+                <div class="flex">
+                    <input
+                        class="bg-white/5 border border-white/10 rounded-l-lg px-4 py-3 text-sm focus:outline-none focus:border-gold w-full"
+                        placeholder="Email Address" type="email" />
+                    <button class="bg-gold text-primary px-4 py-3 rounded-r-lg hover:bg-white transition-colors">
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p class="text-xs text-white/40">© 2026 Cedoka Farms. All rights reserved.</p>
+            <div class="flex gap-8 text-xs text-white/40">
+                <span>Certified Sustainable</span>
+                <span>Global Organic Standard</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ============ CART LOAD ============ */
+        const cart = JSON.parse(localStorage.getItem('cedoka_cart') || '[]');
+
+        function getDeliveryFee() {
+            const selected = document.querySelector('input[name="delivery"]:checked');
+            if (!selected) return 1500;
+            if (selected.value === 'pickup') return 0;
+            if (selected.value === 'express') return 4500;
+            return 1500;
+        }
+
+        function formatMoney(n) {
+            return '₦' + n.toLocaleString('en-NG', { minimumFractionDigits: 2 });
+        }
+
+        function renderSidebar() {
+            const container = document.getElementById('summary-items');
+            const empty = document.getElementById('summary-empty');
+            const totals = document.getElementById('summary-totals');
+            const hdrBadge = document.getElementById('header-cart-count');
+
+            const totalQty = cart.reduce((s, i) => s + i.qty, 0);
+            if (hdrBadge) { hdrBadge.textContent = totalQty; hdrBadge.classList.toggle('hidden', totalQty === 0); }
+
+            if (cart.length === 0) {
+                container.innerHTML = '';
+                empty.classList.remove('hidden');
+                totals.classList.add('hidden');
+                return;
+            }
+            empty.classList.add('hidden');
+            totals.classList.remove('hidden');
+
+            container.innerHTML = cart.map(item => `
+                <div class="flex gap-3 items-center">
+                    <img src="${item.img}" alt="${item.title}" class="w-14 h-14 object-cover rounded-xl bg-slate-100 flex-shrink-0" />
+                    <div class="flex-1 min-w-0">
+                        <p class="font-bold text-primary text-sm truncate">${item.title}</p>
+                        <p class="text-xs text-slate-400">Qty: ${item.qty}</p>
+                    </div>
+                    <p class="font-black text-primary text-sm shrink-0">${formatMoney(item.price * item.qty)}</p>
+                </div>`).join('');
+
+            updateTotals();
+        }
+
+        function updateTotals() {
+            const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+            const delivery = getDeliveryFee();
+            const total = subtotal + delivery;
+            const delivStr = delivery === 0 ? 'FREE' : formatMoney(delivery);
+
+            document.getElementById('sidebar-subtotal').textContent = formatMoney(subtotal);
+            document.getElementById('sidebar-delivery').textContent = delivStr;
+            document.getElementById('sidebar-total').textContent = formatMoney(total);
+        }
+
+        // Update totals when delivery method changes
+        document.querySelectorAll('input[name="delivery"]').forEach(r => r.addEventListener('change', () => { updateTotals(); syncReviewTotals(); }));
+
+        /* ============ STEP NAVIGATION ============ */
+        let currentStep = 1;
+
+        function goToStep(n) {
+            if (n === 2 && !validateStep1()) return;
+            if (n === 3) buildReview();
+            document.getElementById(`step-${currentStep}`).classList.add('hidden');
+            document.getElementById(`step-${n}`).classList.remove('hidden');
+            currentStep = n;
+            updateStepDots();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateStepDots() {
+            for (let i = 1; i <= 3; i++) {
+                const dot = document.getElementById(`step${i}-dot`);
+                if (i < currentStep) { dot.className = 'step-dot done'; dot.innerHTML = '<span class="material-symbols-outlined text-sm">check</span>'; }
+                else if (i === currentStep) { dot.className = 'step-dot active'; dot.textContent = i; }
+                else { dot.className = 'step-dot pending'; dot.textContent = i; }
+            }
+            ['1-2', '2-3'].forEach(pair => {
+                const [a, b] = pair.split('-').map(Number);
+                const line = document.getElementById(`step${a}-${b === a + 1 ? a + 1 : b}-line`) || document.getElementById(`step${pair.replace('-', '-')}-line`);
+            });
+            // line colors
+            const l12 = document.getElementById('step1-2-line');
+            const l23 = document.getElementById('step2-3-line');
+            if (l12) l12.style.backgroundColor = currentStep >= 2 ? '#d4af37' : '#e2e8f0';
+            if (l23) l23.style.backgroundColor = currentStep >= 3 ? '#d4af37' : '#e2e8f0';
+        }
+
+        /* ============ VALIDATION ============ */
+        function validateStep1() {
+            const fields = [
+                { id: 'first-name', label: 'First Name' },
+                { id: 'last-name', label: 'Last Name' },
+                { id: 'email', label: 'Email Address' },
+                { id: 'phone', label: 'Phone Number' },
+                { id: 'street', label: 'Street Address' },
+                { id: 'city', label: 'City' },
+                { id: 'state', label: 'State' },
+            ];
+            for (const f of fields) {
+                const el = document.getElementById(f.id);
+                if (!el || !el.value.trim()) {
+                    el.focus();
+                    el.style.borderColor = '#ef4444';
+                    setTimeout(() => el.style.borderColor = '', 2500);
+                    showMsg(`Please fill in: ${f.label}`, true);
+                    return false;
+                }
+            }
+            const emailEl = document.getElementById('email');
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value)) {
+                emailEl.focus(); emailEl.style.borderColor = '#ef4444';
+                setTimeout(() => emailEl.style.borderColor = '', 2500);
+                showMsg('Please enter a valid email address.', true); return false;
+            }
+            return true;
+        }
+
+        /* ============ BUILD REVIEW ============ */
+        function buildReview() {
+            const fn = document.getElementById('first-name')?.value || '';
+            const ln = document.getElementById('last-name')?.value || '';
+            const em = document.getElementById('email')?.value || '';
+            const ph = document.getElementById('phone')?.value || '';
+            const st = document.getElementById('street')?.value || '';
+            const ct = document.getElementById('city')?.value || '';
+            const sta = document.getElementById('state')?.value || '';
+            const deliv = document.querySelector('input[name="delivery"]:checked')?.value || 'standard';
+
+            document.getElementById('review-address').innerHTML = `
+                <div class="space-y-1">
+                    <p class="font-bold text-primary">${fn} ${ln}</p>
+                    <p>${em} &bull; ${ph}</p>
+                    <p>${st}, ${ct}, ${sta} State</p>
+                    <p class="mt-2 text-xs font-bold text-gold uppercase">${deliv === 'pickup' ? 'Self Pickup – Ota HQ' : deliv === 'express' ? 'Express Farm-to-Door' : 'Standard Delivery'}</p>
+                </div>`;
+
+            const ri = document.getElementById('review-items');
+            ri.innerHTML = cart.map(item => `
+                <div class="flex items-center justify-between gap-3 text-sm">
+                    <div class="flex items-center gap-3">
+                        <img src="${item.img}" alt="${item.title}" class="w-10 h-10 object-cover rounded-lg bg-slate-100" />
+                        <span class="font-medium text-primary">${item.title} <span class="text-slate-400 font-normal">x${item.qty}</span></span>
+                    </div>
+                    <span class="font-bold text-primary shrink-0">${formatMoney(item.price * item.qty)}</span>
+                </div>`).join('') || '<p class="text-slate-400 text-sm">No items in cart.</p>';
+            syncReviewTotals();
+        }
+
+        function syncReviewTotals() {
+            const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+            const delivery = getDeliveryFee();
+            const total = subtotal + delivery;
+            const delivStr = delivery === 0 ? 'FREE' : formatMoney(delivery);
+            const rs = document.getElementById('rev-subtotal');
+            const rd = document.getElementById('rev-delivery');
+            const rt = document.getElementById('rev-total');
+            if (rs) rs.textContent = formatMoney(subtotal);
+            if (rd) rd.textContent = delivStr;
+            if (rt) rt.textContent = formatMoney(total);
+        }
+
+        /* ============ PLACE ORDER ============ */
+        function placeOrder() {
+            if (!document.getElementById('agree-terms')?.checked) { showMsg('Please agree to the Terms of Service.', true); return; }
+            if (cart.length === 0) { showMsg('Your cart is empty. Add products to your cart first.', true); return; }
+            const btn = document.getElementById('place-order-btn');
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin">progress_activity</span> Processing...';
+            btn.disabled = true;
+            setTimeout(() => {
+                const ref = '#CF-2026-' + Math.floor(Math.random() * 9000 + 1000);
+                document.getElementById('order-ref').textContent = ref;
+                localStorage.removeItem('cedoka_cart');
+                document.getElementById('success-overlay').classList.add('show');
+            }, 2000);
+        }
+
+        /* ============ PAYMENT TABS ============ */
+        function switchPayTab(tab) {
+            ['card', 'transfer', 'crypto'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.toggle('active', t === tab);
+                document.getElementById(`panel-${t}`).classList.toggle('hidden', t !== tab);
+            });
+        }
+
+        /* ============ CARD FORMATTING ============ */
+        function formatCardNumber(input) {
+            let v = input.value.replace(/\D/g, '').substring(0, 16);
+            input.value = v.replace(/(.{4})/g, '$1  ').trim();
+        }
+        function formatExpiry(input) {
+            let v = input.value.replace(/\D/g, '');
+            if (v.length >= 2) v = v.substring(0, 2) + ' / ' + v.substring(2, 4);
+            input.value = v;
+        }
+        function toggleCvv() {
+            const el = document.getElementById('card-cvv');
+            el.type = el.type === 'password' ? 'text' : 'password';
+        }
+
+        /* ============ COPY UTILS ============ */
+        function copyAccNum() {
+            navigator.clipboard.writeText('3012345678').then(() => showMsg('Account number copied!'));
+        }
+        function copyCrypto() {
+            navigator.clipboard.writeText('TLbxHNCEdXpBqQaHSqHN4aBzL4mKG9Lcxd').then(() => showMsg('Wallet address copied!'));
+        }
+
+        /* ============ TOAST MSG ============ */
+        let _msgTimer;
+        function showMsg(text, isError = false) {
+            let el = document.getElementById('_msg');
+            if (!el) {
+                el = document.createElement('div');
+                el.id = '_msg';
+                el.style.cssText = 'position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(80px);opacity:0;z-index:9000;transition:all 0.3s ease;border-radius:9999px;padding:0.75rem 1.5rem;font-size:0.875rem;font-weight:700;display:flex;align-items:center;gap:0.5rem;box-shadow:0 8px 32px rgba(0,0,0,0.15);white-space:nowrap;';
+                document.body.appendChild(el);
+            }
+            el.style.backgroundColor = isError ? '#ef4444' : '#0a3d2e';
+            el.style.color = 'white';
+            el.textContent = text;
+            requestAnimationFrame(() => { el.style.transform = 'translateX(-50%) translateY(0)'; el.style.opacity = '1'; });
+            clearTimeout(_msgTimer);
+            _msgTimer = setTimeout(() => { el.style.transform = 'translateX(-50%) translateY(80px)'; el.style.opacity = '0'; }, 3000);
+        }
+
+        /* ============ INIT ============ */
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSidebar();
+        });
+    </script>
+</body>
+
+</html>

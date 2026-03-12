@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="description"
+        content="Cedoka Farms - Pure, Fresh, and Organic produce, poultry, and animal feeds based in Awka, Nigeria." />
+    <meta name="keywords" content="Cedoka, Cedoka Farms, Organic, Poultry, Awka, Nigeria, Farming, Produce, Feeds" />
+    <title>Cedoka Farms | Pure. Fresh. Yours.</title>
+    <style>
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #fdfcf8;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+
+        #preloader img {
+            width: 120px;
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.1);
+            }
+        }
+
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+    </style>
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                if (preloader) { preloader.style.opacity = '0'; setTimeout(() => preloader.style.display = 'none', 400); }
+            }, 200);
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); }
+                });
+            });
+            document.querySelectorAll('section').forEach(sec => { sec.classList.add('fade-in-section'); observer.observe(sec); });
+        });
+
+        function toggleMobileNav() {
+            const nav = document.getElementById('mobile-nav');
+            if (nav) {
+                nav.classList.toggle('translate-x-full');
+            }
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0a3d2e",
+                        "gold": "#d4af37",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#12201c",
+                        "linen": "#fdfcf8"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .linen-texture {
+            background-color: #fdfcf8;
+            background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCRSp4m7_CinhVTTpzGiWgzvebMH6ddYS-D38irgY5LUt25oyex8JUVAINV1WU4dWBS3L9smwvRz7qyh6cXmfgODEqt4bKRVXiCnBbDqsppvnKPw1f3v36K9YLERvJSjzQe4sUzLu2QuIrnOVAD4oB29PvH8AqtoXk9zd6K1mqCUnAnnX4mPLXALDw5-mdKdCPwJvG4jOfpA6V3hpgAL2uTCWWgcAsYhtFp5l13J8bh84_lkbUr-Z0RhwmceuzHH7JG7VFbRYr5RAo)
+        }
+    </style>
+</head>
+
+<body
+    class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 selection:bg-gold selection:text-primary">
+    <div id="preloader">
+        <img src="assets/logo.png" alt="Cedoka Farms Logo" />
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-nav"
+        class="fixed inset-0 z-[100] bg-linen/95 backdrop-blur-md transform translate-x-full transition-transform duration-300 flex flex-col pt-24 px-6 md:px-10 pb-10 overflow-y-auto lg:hidden">
+        <button onclick="toggleMobileNav()"
+            class="absolute top-6 right-6 text-primary hover:text-gold transition-colors">
+            <span class="material-symbols-outlined text-4xl">close</span>
+        </button>
+        <nav class="flex flex-col gap-6 items-center">
+            <a class="text-primary text-2xl font-black uppercase tracking-widest hover:text-gold transition-colors"
+                href="index.html">Home</a>
+            <a class="text-primary/70 text-2xl font-bold uppercase tracking-widest hover:text-gold transition-colors"
+                href="about.html">About</a>
+            <a class="text-primary/70 text-2xl font-bold uppercase tracking-widest hover:text-gold transition-colors"
+                href="shop.html">Shop</a>
+            <a class="text-primary/70 text-2xl font-bold uppercase tracking-widest hover:text-gold transition-colors"
+                href="contact.html">Contact</a>
+        </nav>
+        <div class="mt-auto pt-10 text-center text-primary/70 flex flex-col items-center gap-2">
+            <span class="material-symbols-outlined text-gold">location_on</span>
+            <p class="font-bold">Awka, Nigeria</p>
+        </div>
+    </div>
+
+    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+        <header
+            class="sticky top-0 z-50 w-full border-b border-primary/10 bg-linen/95 backdrop-blur-md px-6 md:px-10 lg:px-20 py-4">
+            <div class="mx-auto flex max-w-7xl items-center justify-between gap-8">
+                <a href="index.html" class="flex items-center gap-2 z-50 relative shrink-0">
+                    <img src="assets/logo.png" alt="Cedoka Farms" class="h-10 md:h-12 w-auto object-contain" />
+                </a>
+                <nav class="hidden lg:flex items-center gap-10">
+                    <a class="text-primary text-sm font-bold uppercase tracking-widest hover:text-gold transition-colors"
+                        href="index.html">Home</a>
+                    <a class="text-primary/70 text-sm font-bold uppercase tracking-widest hover:text-gold transition-colors"
+                        href="about.html">About</a>
+                    <a class="text-primary/70 text-sm font-bold uppercase tracking-widest hover:text-gold transition-colors"
+                        href="contact.html">Contact</a>
+                </nav>
+                <div class="flex items-center gap-4">
+                    <a href="shop.html"
+                        class="hidden sm:inline-block bg-primary text-white px-6 py-2.5 rounded-none text-xs font-bold tracking-widest hover:bg-primary/95 transition-all outline-none">
+                        SHOP NOW
+                    </a>
+                    <button onclick="toggleMobileNav()"
+                        class="lg:hidden ml-4 text-primary hover:text-gold transition-colors z-50 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-3xl">menu</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <main class="flex-1">
+            <section class="relative h-[90vh] w-full overflow-hidden flex items-center justify-center">
+                <div class="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] hover:scale-110"
+                    data-alt="Cinematic wide shot of a misty organic farm at sunrise"
+                    style='background-image: linear-gradient(rgba(10, 61, 46, 0.6), rgba(10, 61, 46, 0.4)), url("https://lh3.googleusercontent.com/aida-public/AB6AXuB02lmDNXNRJ_qYQ_x_BaqB9-d0Txh3hgvXms3x3tk5-9Bgvo0-TnFZ3je0dvVUdfEC0eQchtJoz5WStWxJ9tz2H1UjyaBt4Zv8cdyu6dlrIIX9DZ9U1-FcY6Pz6tGtDCD39lNgN3CeC_vX0sySMRB1OUUkmeGFQupcGJ1hrYlP9ANlY7BrRLWYGyQwaSeZ9xU4u9_GL96n7cXYdJ-MVsU1DDg3E6R1eFDp94W36JFoYzzo07wGM3MTmNv06vnad3uGHT7zwDPUfmw");'>
+                </div>
+                <div class="relative z-10 text-center px-4 max-w-4xl">
+                    <h1
+                        class="text-white text-5xl md:text-7xl lg:text-8xl font-black leading-[1.1] tracking-tight mb-6">
+                        Cedoka Farms – <span class="text-gold">Pure. Fresh. Yours.</span>
+                    </h1>
+                    <p class="text-white/90 text-lg md:text-xl font-light tracking-wide mb-10 max-w-2xl mx-auto italic">
+                        Harvested with intention, delivered with integrity. Experience the pinnacle of premium organic
+                        farming.
+                    </p>
+                    <button
+                        class="bg-gold text-primary hover:bg-white px-10 py-4 text-sm font-bold uppercase tracking-[0.2em] rounded-full transition-all shadow-2xl hover:shadow-gold/20 active:scale-95">
+                        Shop Now
+                    </button>
+                </div>
+                <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+                    <span class="material-symbols-outlined text-white/50 text-4xl">expand_more</span>
+                </div>
+            </section>
+            <section class="py-24 px-6 md:px-10" style="background-color:#FDFCF8;">
+                <div class="max-w-7xl mx-auto">
+                    <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+                        <div class="max-w-xl">
+                            <span class="text-gold font-bold uppercase tracking-[0.3em] text-xs mb-4 block">The
+                                Collection</span>
+                            <h2 class="text-primary text-4xl md:text-5xl font-black tracking-tight">Farm Specialties
+                            </h2>
+                        </div>
+                        <a class="text-primary font-bold border-b-2 border-gold pb-1 hover:text-gold transition-colors"
+                            href="#">View Catalog</a>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div
+                            class="group relative aspect-[4/5] overflow-hidden rounded-xl shadow-xl transition-all duration-500 hover:-translate-y-4">
+                            <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                data-alt="Golden organic chickens in a green pasture"
+                                style='background-image: linear-gradient(to top, rgba(10, 61, 46, 0.9), transparent), url("https://lh3.googleusercontent.com/aida-public/AB6AXuDPOHYYboojpGb1fndVocUuKlYkAanWEYP-4eWE5zIYX25_uhC7bG7EnzxOwmg0B1pdTrlFh67BhsdQp77SlTHFq4JFqQ-ymzwMMwQ3ROFY3wjGAzuoroxg6Xo0Wp6BHsmlOrDSIQ0ASoPHm70QCP1RiZRz9P3ijvnKHWKrOSRmMKNUHW6rKUTb46jPfS1GjYfQLZqMjjUguPiLy54pXFDn7hzSQUU8z8dgoR4Xe17TC9WcTKXugI2iBpLerzps2GLaASH2y4Ju-dE");'>
+                            </div>
+                            <div class="absolute bottom-0 left-0 p-8 w-full">
+                                <h3 class="text-white text-3xl font-bold mb-2">Poultry</h3>
+                                <p
+                                    class="text-white/80 text-sm font-medium mb-4 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                                    Heritage breeds raised on open pastures with organic feed.</p>
+                                <div class="w-12 h-1 bg-gold transition-all duration-500 group-hover:w-full"></div>
+                            </div>
+                        </div>
+                        <div
+                            class="group relative aspect-[4/5] overflow-hidden rounded-xl shadow-xl transition-all duration-500 hover:-translate-y-4">
+                            <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                data-alt="Basket of freshly picked vibrant organic vegetables"
+                                style='background-image: linear-gradient(to top, rgba(10, 61, 46, 0.9), transparent), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBvLcKj4jMY8CRXrLSvfgeDXHzo6OoJyPeiZkb-wlZQsppoVN5geu5MKc3M4GZeUJE_Nz9zAZu-Ck02xprZy1mUTzhpJBIHJmygT-SShrLs3Nli1-eocYkmrtwJULDc1w-t7f6R749J455daraV6_XJpdzoZrwfuHE34XUJ9a44AzgNHV8kRlf9g793ugyv3qPMj-o-T_u_1Ct7iIteh2KCVe4zkvwLUtCtpLm5J_LYweV5g945CdCXqoyLDOKT1GnIZGKHmbnX6BI");'>
+                            </div>
+                            <div class="absolute bottom-0 left-0 p-8 w-full">
+                                <h3 class="text-white text-3xl font-bold mb-2">Produce</h3>
+                                <p
+                                    class="text-white/80 text-sm font-medium mb-4 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                                    Heirloom vegetables and fruits picked daily at peak ripeness.</p>
+                                <div class="w-12 h-1 bg-gold transition-all duration-500 group-hover:w-full"></div>
+                            </div>
+                        </div>
+                        <div
+                            class="group relative aspect-[4/5] overflow-hidden rounded-xl shadow-xl transition-all duration-500 hover:-translate-y-4">
+                            <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                data-alt="Close up of organic high quality animal feed grains"
+                                style='background-image: linear-gradient(to top, rgba(10, 61, 46, 0.9), transparent), url("https://lh3.googleusercontent.com/aida-public/AB6AXuAmWMKnTclbzZqu7ipXq6nV_Z9M9ufMSo8iwANCq8Yim0u-UKGMCXIFWUyV_8Z7V3w9V7ccUTi9Oid5G1P_H69B-I70-Rs0hzsbdQUTUlrfn84MJcelca0k-aqMahVLKRqhi74GvOgOT65DYyMiGQzATCIuMvuDUBGaCMt35igG9uUrDxq0aLWdvTQ5jeom_u_p4y2n-Bhg1L42BzHUR0usSerdm-OX8m5_0hFWNrUkiIMg0aze2fzk3nLzdzReNP_YHWhu61YiTQY");'>
+                            </div>
+                            <div class="absolute bottom-0 left-0 p-8 w-full">
+                                <h3 class="text-white text-3xl font-bold mb-2">Feeds</h3>
+                                <p
+                                    class="text-white/80 text-sm font-medium mb-4 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                                    Customized organic grain blends for your own livestock needs.</p>
+                                <div class="w-12 h-1 bg-gold transition-all duration-500 group-hover:w-full"></div>
+                            </div>
+                        </div>
+                        <!-- New Specialties -->
+                        <div
+                            class="group relative aspect-[4/5] overflow-hidden rounded-xl shadow-xl transition-all duration-500 hover:-translate-y-4">
+                            <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                style='background-image: linear-gradient(to top, rgba(10, 61, 46, 0.9), transparent), url("https://images.unsplash.com/photo-1592424005872-9b0d625bc20e?q=80&w=800&auto=format&fit=crop");'>
+                            </div>
+                            <div class="absolute bottom-0 left-0 p-8 w-full">
+                                <h3 class="text-white text-3xl font-bold mb-2">Plant Seedlings <br>& Suckers</h3>
+                                <p
+                                    class="text-white/80 text-sm font-medium mb-4 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                                    High-quality organic seedlings and suckers to start your own yield.</p>
+                                <div class="w-12 h-1 bg-gold transition-all duration-500 group-hover:w-full"></div>
+                            </div>
+                        </div>
+                        <div
+                            class="group relative aspect-[4/5] overflow-hidden rounded-xl shadow-xl transition-all duration-500 hover:-translate-y-4">
+                            <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                style='background-image: linear-gradient(to top, rgba(10, 61, 46, 0.9), transparent), url("https://images.unsplash.com/photo-1516467508483-a7212febe31a?q=80&w=800&auto=format&fit=crop");'>
+                            </div>
+                            <div class="absolute bottom-0 left-0 p-8 w-full">
+                                <h3 class="text-white text-3xl font-bold mb-2">Pigs</h3>
+                                <p
+                                    class="text-white/80 text-sm font-medium mb-4 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                                    Healthy, robust pigs raised organically in well-maintained pens.</p>
+                                <div class="w-12 h-1 bg-gold transition-all duration-500 group-hover:w-full"></div>
+                            </div>
+                        </div>
+                        <div
+                            class="group relative aspect-[4/5] overflow-hidden rounded-xl shadow-xl transition-all duration-500 hover:-translate-y-4">
+                            <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                                style='background-image: linear-gradient(to top, rgba(10, 61, 46, 0.9), transparent), url("https://images.unsplash.com/photo-1524024973431-2ad916746881?q=80&w=800&auto=format&fit=crop");'>
+                            </div>
+                            <div class="absolute bottom-0 left-0 p-8 w-full">
+                                <h3 class="text-white text-3xl font-bold mb-2">Pen Animals</h3>
+                                <p
+                                    class="text-white/80 text-sm font-medium mb-4 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                                    Quality specialized livestock managed with utmost care and integrity.</p>
+                                <div class="w-12 h-1 bg-gold transition-all duration-500 group-hover:w-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="bg-primary py-20 px-6 border-y-4 border-gold">
+                <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+                    <div
+                        class="flex flex-col items-center text-center p-6 rounded-xl bg-white/5 border border-white/10 hover:border-gold/30 transition-all group">
+                        <div
+                            class="size-20 bg-gold/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-gold text-4xl">eco</span>
+                        </div>
+                        <h4 class="text-white text-xl font-bold mb-3 tracking-wide">Certified Organic</h4>
+                        <p class="text-white/60 font-light text-sm">Strict adherence to natural farming methods without
+                            synthetic chemicals.</p>
+                    </div>
+                    <div
+                        class="flex flex-col items-center text-center p-6 rounded-xl bg-white/5 border border-white/10 hover:border-gold/30 transition-all group">
+                        <div
+                            class="size-20 bg-gold/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-gold text-4xl">local_shipping</span>
+                        </div>
+                        <h4 class="text-white text-xl font-bold mb-3 tracking-wide">Farm-Fresh Delivery</h4>
+                        <p class="text-white/60 font-light text-sm">Directly from our soil to your doorstep within 24
+                            hours of harvest.</p>
+                    </div>
+                    <div
+                        class="flex flex-col items-center text-center p-6 rounded-xl bg-white/5 border border-white/10 hover:border-gold/30 transition-all group">
+                        <div
+                            class="size-20 bg-gold/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-gold text-4xl">verified_user</span>
+                        </div>
+                        <h4 class="text-white text-xl font-bold mb-3 tracking-wide">Trusted by Thousands</h4>
+                        <p class="text-white/60 font-light text-sm">A legacy of quality providing nutrient-dense food to
+                            families since 1994.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer class="bg-background-dark text-white/50 py-16 px-6 border-t border-white/5">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-12">
+                <div class="max-w-sm">
+                    <div class="flex items-center gap-2 mb-6">
+                        <img src="assets/logo.png" alt="Cedoka Farms"
+                            class="h-10 w-auto object-contain brightness-0 invert" />
+                        <!-- <h2 class="text-white text-xl font-black uppercase tracking-tighter">Cedoka <span
+                                class="text-gold">Farms</span></h2> -->
+                    </div>
+                    <p class="text-sm leading-relaxed mb-6 italic">
+                        "Agriculture is our wisest pursuit, because it will in the end contribute most to real wealth,
+                        good morals, and happiness."
+                    </p>
+                    <div class="flex gap-2 items-center text-white mb-6">
+                        <span class="material-symbols-outlined text-gold">location_on</span>
+                        <p class="text-sm font-bold">Awka, Nigeria</p>
+                    </div>
+                    <div class="flex gap-4">
+                        <a class="hover:text-gold" href="#"><span
+                                class="material-symbols-outlined">social_leaderboard</span></a>
+                        <a class="hover:text-gold" href="#"><span
+                                class="material-symbols-outlined">photo_camera</span></a>
+                        <a class="hover:text-gold" href="#"><span
+                                class="material-symbols-outlined">alternate_email</span></a>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-12">
+                    <div>
+                        <h5 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Explore</h5>
+                        <ul class="space-y-4 text-xs font-bold uppercase tracking-widest">
+                            <li><a class="hover:text-gold" href="#">Collections</a></li>
+                            <li><a class="hover:text-gold" href="#">Wholesale</a></li>
+                            <li><a class="hover:text-gold" href="#">Farm Visits</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Company</h5>
+                        <ul class="space-y-4 text-xs font-bold uppercase tracking-widest">
+                            <li><a class="hover:text-gold" href="#">Our Story</a></li>
+                            <li><a class="hover:text-gold" href="#">Sustainability</a></li>
+                            <li><a class="hover:text-gold" href="#">Careers</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <h5 class="text-white font-bold mb-6 text-sm uppercase tracking-widest">Newsletter</h5>
+                        <div class="flex gap-2">
+                            <input
+                                class="bg-white/5 border-white/10 rounded px-4 py-2 text-xs w-full focus:ring-1 focus:ring-gold focus:border-gold"
+                                placeholder="Email address" type="email" />
+                            <button class="bg-gold text-primary p-2 rounded hover:bg-white transition-colors">
+                                <span class="material-symbols-outlined">arrow_forward</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/5 text-[10px] uppercase tracking-[0.2em] flex flex-col sm:flex-row justify-between items-center gap-4">
+                <p>© 2026 Cedoka Farms. Cultivating excellence.</p>
+                <div class="flex gap-8">
+                    <a class="hover:text-white" href="#">Privacy Policy</a>
+                    <a class="hover:text-white" href="#">Terms of Harvest</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

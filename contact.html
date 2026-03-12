@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="description" content="Contact Cedoka Farms - Get in touch with us for fresh organic produce, poultry, and animal feeds. Based in Ota, Ogun State, Nigeria." />
+    <meta name="keywords" content="Cedoka, Cedoka Farms, Contact, Ota, Ogun State, Nigeria, Organic" />
+    <title>Contact Us | Cedoka Farms</title>
+    <style>
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background-color: #f6f8f7;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+        #preloader img { width: 120px; animation: pulse 1s infinite alternate; }
+        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.1); } }
+        .fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-in-section.is-visible { opacity: 1; transform: none; }
+    </style>
+    <script>
+        window.addEventListener('load', () => { setTimeout(() => { const preloader = document.getElementById('preloader'); if (preloader) { preloader.style.opacity = '0'; setTimeout(() => preloader.style.display = 'none', 500); } }, 500); });
+        document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } }); });
+            document.querySelectorAll('section').forEach(sec => { sec.classList.add('fade-in-section'); observer.observe(sec); });
+        });
+        function toggleMobileNav() { const nav = document.getElementById('mobile-nav'); if (nav) nav.classList.toggle('translate-x-full'); }
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0a3d2e",
+                        "gold": "#d4af37",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#12201c",
+                        "linen": "#fdfcf8"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .linen-texture {
+            background-color: #fdfcf8;
+        }
+        .gold-glow:hover { box-shadow: 0 0 15px rgba(212, 175, 55, 0.4) }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+    <div id="preloader">
+        <img src="assets/logo.png" alt="Cedoka Farms Logo" />
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-nav"
+        class="fixed inset-0 z-[100] bg-white/95 backdrop-blur-md transform translate-x-full transition-transform duration-300 flex flex-col pt-24 px-6 md:px-10 pb-10 overflow-y-auto lg:hidden">
+        <button onclick="toggleMobileNav()"
+            class="absolute top-6 right-6 text-primary hover:text-gold transition-colors">
+            <span class="material-symbols-outlined text-4xl">close</span>
+        </button>
+        <nav class="flex flex-col gap-6 items-center">
+            <a class="text-primary/70 text-2xl font-bold uppercase tracking-widest hover:text-gold transition-colors" href="index.html">Home</a>
+            <a class="text-primary/70 text-2xl font-bold uppercase tracking-widest hover:text-gold transition-colors" href="about.html">About</a>
+            <a class="text-primary/70 text-2xl font-bold uppercase tracking-widest hover:text-gold transition-colors" href="shop.html">Shop</a>
+            <a class="text-primary font-black text-2xl uppercase tracking-widest hover:text-gold transition-colors" href="contact.html">Contact</a>
+        </nav>
+        <div class="mt-auto pt-10 text-center text-primary/70 flex flex-col items-center gap-2">
+            <span class="material-symbols-outlined text-gold">location_on</span>
+            <p class="font-bold">Ota, Ogun State, Nigeria</p>
+        </div>
+    </div>
+
+    <!-- Sticky Header -->
+    <header class="sticky top-0 z-50 w-full border-b border-primary/10 bg-white/95 backdrop-blur-md px-6 md:px-10 lg:px-20 py-4">
+        <div class="mx-auto flex max-w-7xl items-center justify-between gap-8">
+            <a href="index.html" class="flex items-center gap-2 z-50 relative shrink-0">
+                <img src="assets/logo.png" alt="Cedoka Farms" class="h-10 md:h-12 w-auto object-contain" />
+            </a>
+            <nav class="hidden lg:flex items-center gap-10">
+                <a class="text-primary/70 text-sm font-bold uppercase tracking-widest hover:text-gold transition-colors" href="index.html">Home</a>
+                <a class="text-primary/70 text-sm font-bold uppercase tracking-widest hover:text-gold transition-colors" href="about.html">About</a>
+                <a class="text-primary/70 text-sm font-bold uppercase tracking-widest hover:text-gold transition-colors" href="shop.html">Shop</a>
+                <a class="text-primary font-black text-sm uppercase tracking-widest hover:text-gold transition-colors" href="contact.html">Contact</a>
+            </nav>
+            <div class="flex items-center gap-4">
+                <a href="shop.html" class="hidden sm:inline-block bg-primary text-white px-6 py-2.5 rounded-none text-xs font-bold tracking-widest hover:bg-primary/95 transition-all outline-none">SHOP NOW</a>
+                <button onclick="toggleMobileNav()" class="lg:hidden ml-4 text-primary hover:text-gold transition-colors z-50 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-3xl">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- Hero Section -->
+    <section class="relative w-full h-[40vh] flex flex-col items-center justify-center text-center px-4 overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-primary/40 z-10"></div>
+            <img alt="Aerial view of lush green farmland" class="w-full h-full object-cover"
+                data-alt="Lush green expansive agricultural fields landscape"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGwl4Q9deTvycq5uh5xM_WVT8x1amaazmSahCyKV6n_z31sJ1OuewirRFxQqlcXsgJ3IbpCKmmffI6Y5H90b-SPbcXJfbCMdtcjV2vwBUyIjdMV1JTRAnQtd0s_qGjYXTs0T4rtBB7kWXRkQ9vBAXrfsy72kWy17tWz8-QjfYXV1EjLADr9gkfukSra1JvBimUg7uCfZ8BSovDQ1_Ui5blmG0xKhQkr-BGekhPVnaS1xtrM-OMl6N2-4dgmtZenS4JSyHBv7Ipyf8" />
+        </div>
+        <div class="relative z-20 space-y-4">
+            <span class="text-gold font-bold tracking-[0.3em] text-xs uppercase">Get in Touch</span>
+            <h1 class="font-serif text-4xl md:text-6xl text-white">Contact Our Estate</h1>
+            <p class="text-white/80 max-w-xl mx-auto text-sm md:text-base font-light leading-relaxed">
+                Experience the elegance of premium agriculture. Reach out to Cedoka Farms for tailored inquiries and
+                global partnerships.
+            </p>
+        </div>
+    </section>
+    <!-- Main Content Section -->
+    <main class="linen-texture py-20 px-6 md:px-20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16">
+            <!-- Left: Contact Form -->
+            <div
+                class="bg-white dark:bg-background-dark p-8 md:p-12 rounded-xl shadow-xl shadow-primary/5 border border-primary/5">
+                <h3 class="font-serif text-3xl text-primary dark:text-slate-100 mb-8">Send Us a Message</h3>
+                <form class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label
+                                class="text-xs font-bold uppercase tracking-wider text-primary/60 dark:text-slate-400">Full
+                                Name</label>
+                            <input
+                                class="w-full bg-background-light dark:bg-primary/10 border-none rounded-lg focus:ring-2 focus:ring-accent-gold p-4 text-sm outline-none"
+                                placeholder="Johnathan Doe" type="text" />
+                        </div>
+                        <div class="space-y-2">
+                            <label
+                                class="text-xs font-bold uppercase tracking-wider text-primary/60 dark:text-slate-400">Email
+                                Address</label>
+                            <input
+                                class="w-full bg-background-light dark:bg-primary/10 border-none rounded-lg focus:ring-2 focus:ring-accent-gold p-4 text-sm outline-none"
+                                placeholder="j.doe@estate.com" type="email" />
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <label
+                            class="text-xs font-bold uppercase tracking-wider text-primary/60 dark:text-slate-400">Subject</label>
+                        <select
+                            class="w-full bg-background-light dark:bg-primary/10 border-none rounded-lg focus:ring-2 focus:ring-accent-gold p-4 text-sm outline-none">
+                            <option>Partnership Inquiry</option>
+                            <option>Product Information</option>
+                            <option>Estate Visit</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label
+                            class="text-xs font-bold uppercase tracking-wider text-primary/60 dark:text-slate-400">Your
+                            Message</label>
+                        <textarea
+                            class="w-full bg-background-light dark:bg-primary/10 border-none rounded-lg focus:ring-2 focus:ring-accent-gold p-4 text-sm outline-none resize-none"
+                            placeholder="How may we assist you today?" rows="5"></textarea>
+                    </div>
+                    <button
+                        class="w-full bg-primary text-white py-4 rounded-lg font-bold tracking-widest uppercase text-sm gold-glow transition-all"
+                        type="submit">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+            <!-- Right: Contact Details -->
+            <div class="flex flex-col justify-center space-y-12">
+                <div class="space-y-6">
+                    <h3 class="font-serif text-3xl text-primary dark:text-slate-100">The Estate Office</h3>
+                    <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Located in Ota, Ogun State, our headquarters serves as the administrative hub for our
+                        sustainable agricultural operations. We welcome guests by appointment.
+                    </p>
+                </div>
+                <div class="space-y-8">
+                    <div class="flex items-start gap-6">
+                        <div class="bg-primary/5 dark:bg-gold/10 p-4 rounded-full text-gold">
+                            <span class="material-symbols-outlined">location_on</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-primary dark:text-slate-100">Visit Us</h4>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm">Cedoka Farms HQ,<br />Ota, Ogun State, Nigeria</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-6">
+                        <div class="bg-primary/5 dark:bg-gold/10 p-4 rounded-full text-gold">
+                            <span class="material-symbols-outlined">call</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-primary dark:text-slate-100">Phone</h4>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm">+234 803 000 0000</p>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm">Mon-Fri, 8am - 6pm WAT</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-6">
+                        <div class="bg-primary/5 dark:bg-gold/10 p-4 rounded-full text-gold">
+                            <span class="material-symbols-outlined">mail</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-primary dark:text-slate-100">Email</h4>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm">hello@cedokafarms.com</p>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm">info@cedokafarms.com</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-8 border-t border-primary/10 flex gap-4">
+                    <a class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white hover:bg-accent-gold transition-colors"
+                        href="#">
+                        <span class="material-symbols-outlined text-sm">public</span>
+                    </a>
+                    <a class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white hover:bg-accent-gold transition-colors"
+                        href="#">
+                        <span class="material-symbols-outlined text-sm">photo_camera</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Map Section -->
+    <section class="w-full relative" style="height:500px;">
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63455.73744025965!2d3.1499!3d6.6833!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x10399e8a00000001%3A0x6a7a50e4a0a7d8c7!2sOta%2C%20Ogun%20State%2C%20Nigeria!5e0!3m2!1sen!2sng!4v1700000000000"
+            width="100%" height="500" style="border:0; display:block;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade" title="Cedoka Farms HQ - Ota, Ogun State"></iframe>
+        <div class="absolute top-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none">
+            <div class="bg-white/95 backdrop-blur px-6 py-3 rounded-lg shadow-2xl border border-gold/30 text-center">
+                <p class="font-serif text-lg text-primary">Cedoka Farms HQ</p>
+                <p class="text-[10px] uppercase tracking-widest text-gold font-bold">Ota, Ogun State, Nigeria</p>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="bg-primary text-white pt-20 pb-10 px-6 md:px-20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-white/10 pb-16">
+            <div class="space-y-6">
+                <div class="flex items-center gap-3">
+                    <img src="assets/logo.png" alt="Cedoka Farms" class="h-10 w-auto object-contain brightness-0 invert" />
+                </div>
+                <div class="flex gap-2 items-center text-white mt-2">
+                    <span class="material-symbols-outlined text-gold">location_on</span>
+                    <p class="text-sm font-bold">Ota, Ogun State, Nigeria</p>
+                </div>
+                <p class="text-white/60 text-sm leading-relaxed">
+                    Cultivating excellence through tradition and innovation. Join our journey toward sustainable luxury
+                    agriculture.
+                </p>
+            </div>
+            <div class="space-y-6">
+                <h4 class="text-gold font-bold text-xs uppercase tracking-widest">Navigation</h4>
+                <ul class="space-y-4 text-sm text-white/80">
+                    <li><a class="hover:text-gold transition-colors" href="index.html">Home</a></li>
+                    <li><a class="hover:text-gold transition-colors" href="about.html">About</a></li>
+                    <li><a class="hover:text-gold transition-colors" href="shop.html">Shop</a></li>
+                    <li><a class="hover:text-gold transition-colors" href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="space-y-6">
+                <h4 class="text-gold font-bold text-xs uppercase tracking-widest">Legal</h4>
+                <ul class="space-y-4 text-sm text-white/80">
+                    <li><a class="hover:text-gold transition-colors" href="#">Privacy Policy</a></li>
+                    <li><a class="hover:text-gold transition-colors" href="#">Terms of Service</a></li>
+                    <li><a class="hover:text-gold transition-colors" href="#">Shipping &amp; Returns</a></li>
+                </ul>
+            </div>
+            <div class="space-y-6">
+                <h4 class="text-gold font-bold text-xs uppercase tracking-widest">Newsletter</h4>
+                <p class="text-sm text-white/60">Subscribe for exclusive harvest updates.</p>
+                <div class="flex">
+                    <input
+                        class="bg-white/5 border border-white/10 rounded-l-lg px-4 py-3 text-sm focus:outline-none focus:border-gold w-full"
+                        placeholder="Email Address" type="email" />
+                    <button class="bg-gold text-primary px-4 py-3 rounded-r-lg hover:bg-white transition-colors">
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto pt-10 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p class="text-xs text-white/40">© 2026 Cedoka Farms. All rights reserved.</p>
+            <div class="flex gap-8 text-xs text-white/40">
+                <span>Certified Sustainable</span>
+                <span>Global Organic Standard</span>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

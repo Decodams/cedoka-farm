@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="description"
+        content="Shop at Cedoka Farms - Fresh, organic produce, poultry, and animal feeds based in Ota, Ogun State, Nigeria." />
+    <meta name="keywords" content="Cedoka, Cedoka Farms, shop, Ota, Ogun State, Nigeria" />
+    <title>Shop | Cedoka Farms</title>
+    <style>
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background-color: #f6f8f7;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.4s ease;
+        }
+
+        #preloader img {
+            width: 110px;
+            animation: pulse 1s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.08);
+            }
+        }
+
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        .product-card:hover .zoom-img {
+            transform: scale(1.05);
+        }
+
+        @keyframes soft-pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1)
+            }
+
+            50% {
+                opacity: .8;
+                transform: scale(.98)
+            }
+        }
+
+        .pulse-badge {
+            animation: soft-pulse 2s infinite ease-in-out;
+        }
+
+        /* Cart Drawer */
+        #cart-drawer {
+            transform: translateX(100%);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #cart-drawer.open {
+            transform: translateX(0);
+        }
+
+        #cart-overlay {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        #cart-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* Toast notification */
+        #cart-toast {
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        #cart-toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Cart badge pulse */
+        @keyframes badge-pop {
+            0% {
+                transform: scale(1)
+            }
+
+            50% {
+                transform: scale(1.4)
+            }
+
+            100% {
+                transform: scale(1)
+            }
+        }
+
+        .badge-pop {
+            animation: badge-pop 0.3s ease;
+        }
+    </style>
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const p = document.getElementById('preloader');
+                if (p) { p.style.opacity = '0'; setTimeout(() => p.style.display = 'none', 400); }
+            }, 200);
+        });
+        document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); observer.unobserve(e.target); } });
+            }, { threshold: 0.05 });
+            document.querySelectorAll('section, aside, .product-card').forEach(el => { el.classList.add('fade-in-section'); observer.observe(el); });
+        });
+        function toggleMobileNav() { const nav = document.getElementById('mobile-nav'); if (nav) nav.classList.toggle('translate-x-full'); }
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0a3d2e",
+                        "gold": "#d4af37",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#12201c",
+                    },
+                    fontFamily: { "display": ["Inter", "sans-serif"] },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden">
+    <div id="preloader">
+        <img src="assets/logo.png" alt="Cedoka Farms Logo" />
+    </div>
+
+    <!-- Cart Overlay -->
+    <div id="cart-overlay" class="fixed inset-0 z-[150] bg-black/40 backdrop-blur-sm" onclick="closeCart()"></div>
+
+    <!-- Cart Drawer -->
+    <div id="cart-drawer"
+        class="fixed top-0 right-0 h-full w-full sm:w-[420px] z-[200] bg-white shadow-2xl flex flex-col">
+        <div class="flex items-center justify-between px-6 py-5 border-b border-primary/10">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary">shopping_cart</span>
+                <h2 class="text-lg font-black text-primary uppercase tracking-widest">Your Cart</h2>
+            </div>
+            <button onclick="closeCart()" class="text-slate-400 hover:text-primary transition-colors">
+                <span class="material-symbols-outlined text-2xl">close</span>
+            </button>
+        </div>
+        <div id="cart-items" class="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+            <!-- items injected here -->
+        </div>
+        <!-- Empty state -->
+        <div id="cart-empty" class="hidden flex-1 flex flex-col items-center justify-center text-center px-8 py-16">
+            <span class="material-symbols-outlined text-6xl text-primary/20 mb-4">shopping_cart</span>
+            <p class="text-slate-500 font-medium">Your cart is empty.</p>
+            <p class="text-slate-400 text-sm mt-1">Add some fresh produce to get started!</p>
+        </div>
+        <div id="cart-footer" class="border-t border-primary/10 px-6 py-5 space-y-4">
+            <div class="flex justify-between items-center">
+                <span class="text-sm font-bold text-slate-500 uppercase tracking-wider">Subtotal</span>
+                <span id="cart-subtotal" class="text-xl font-black text-primary">₦0.00</span>
+            </div>
+            <a id="checkout-btn" href="checkout.html"
+                class="block w-full bg-primary text-white text-center py-4 rounded-xl font-bold tracking-widest uppercase text-sm hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 hover:shadow-primary/40">
+                Proceed to Checkout
+            </a>
+            <button onclick="closeCart()"
+                class="block w-full text-center text-primary/60 hover:text-primary text-sm font-medium transition-colors">
+                Continue Shopping
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="cart-toast"
+        class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[300] bg-primary text-white px-6 py-3 rounded-full shadow-xl flex items-center gap-2 font-bold text-sm">
+        <span class="material-symbols-outlined text-gold text-lg">check_circle</span>
+        <span id="toast-msg">Added to cart!</span>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-nav"
+        class="fixed inset-0 z-[100] bg-white/95 backdrop-blur-md transform translate-x-full transition-transform duration-300 flex flex-col pt-24 px-6 md:px-10 pb-10 overflow-y-auto lg:hidden">
+        <button onclick="toggleMobileNav()"
+            class="absolute top-6 right-6 text-primary hover:text-gold transition-colors">
+            <span class="material-symbols-outlined text-4xl">close</span>
+        </button>
+        <nav class="flex flex-col gap-6 items-center">
+            <a class="text-primary/70 font-bold text-2xl uppercase tracking-widest hover:text-gold transition-colors"
+                href="index.html">Home</a>
+            <a class="text-primary/70 font-bold text-2xl uppercase tracking-widest hover:text-gold transition-colors"
+                href="about.html">About</a>
+            <a class="text-primary font-black text-2xl uppercase tracking-widest hover:text-gold transition-colors"
+                href="shop.html">Shop</a>
+            <a class="text-primary/70 font-bold text-2xl uppercase tracking-widest hover:text-gold transition-colors"
+                href="contact.html">Contact</a>
+        </nav>
+        <div class="mt-auto pt-10 text-center text-primary/70 flex flex-col items-center gap-2">
+            <span class="material-symbols-outlined text-gold">location_on</span>
+            <p class="font-bold">Ota, Ogun State, Nigeria</p>
+        </div>
+    </div>
+
+    <!-- Sticky Navbar -->
+    <header
+        class="sticky top-0 z-50 w-full border-b border-primary/10 bg-white/95 backdrop-blur-md px-6 md:px-10 lg:px-20 py-4">
+        <div class="mx-auto flex max-w-7xl items-center justify-between gap-8">
+            <a href="index.html" class="flex items-center gap-2 z-50 relative shrink-0">
+                <img src="assets/logo.png" alt="Cedoka Farms" class="h-10 md:h-12 w-auto object-contain" />
+            </a>
+            <nav class="hidden lg:flex items-center gap-10">
+                <a class="text-primary/70 font-bold text-sm uppercase tracking-widest hover:text-gold transition-colors"
+                    href="index.html">Home</a>
+                <a class="text-primary/70 font-bold text-sm uppercase tracking-widest hover:text-gold transition-colors"
+                    href="about.html">About</a>
+                <a class="text-primary font-black text-sm uppercase tracking-widest hover:text-gold transition-colors"
+                    href="shop.html">Shop</a>
+                <a class="text-primary/70 font-bold text-sm uppercase tracking-widest hover:text-gold transition-colors"
+                    href="contact.html">Contact</a>
+            </nav>
+            <div class="flex items-center gap-3">
+                <!-- Cart Icon with Badge -->
+                <button onclick="openCart()" class="relative p-2 text-primary hover:text-gold transition-colors"
+                    aria-label="View Cart">
+                    <span class="material-symbols-outlined text-2xl">shopping_cart</span>
+                    <span id="cart-badge"
+                        class="absolute -top-1 -right-1 bg-gold text-primary text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+                </button>
+                <button onclick="toggleMobileNav()"
+                    class="lg:hidden ml-2 text-primary hover:text-gold transition-colors z-50 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-3xl">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+        <div class="flex flex-col lg:flex-row gap-10">
+            <!-- Sidebar Filters -->
+            <aside class="w-full lg:w-72 flex-shrink-0 space-y-6">
+                <!-- Search Bar -->
+                <div>
+                    <h3 class="text-sm font-black uppercase tracking-wider text-primary mb-3">Search</h3>
+                    <div class="relative w-full">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-primary/60">
+                            <span class="material-symbols-outlined text-xl">search</span>
+                        </span>
+                        <input id="shop-search"
+                            class="w-full rounded-xl border border-primary/20 bg-white py-3 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none shadow-sm"
+                            placeholder="Search fresh farm..." type="text" oninput="filterProducts()" />
+                    </div>
+                </div>
+
+                <!-- Categories -->
+                <div>
+                    <h3 class="text-sm font-black uppercase tracking-wider text-primary mb-3">Categories</h3>
+                    <div class="space-y-3 bg-white p-5 rounded-xl border border-primary/10 shadow-sm">
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input checked class="rounded border-slate-300 text-primary focus:ring-primary"
+                                type="checkbox" onchange="updateCategory(this, 'poultry')" />
+                            <span
+                                class="text-sm font-medium text-slate-700 group-hover:text-primary transition-colors">Poultry</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input checked class="rounded border-slate-300 text-primary focus:ring-primary"
+                                type="checkbox" onchange="updateCategory(this, 'vegetables')" />
+                            <span
+                                class="text-sm font-medium text-slate-700 group-hover:text-primary transition-colors">Vegetables</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input checked class="rounded border-slate-300 text-primary focus:ring-primary"
+                                type="checkbox" onchange="updateCategory(this, 'feeds')" />
+                            <span
+                                class="text-sm font-medium text-slate-700 group-hover:text-primary transition-colors">Feeds
+                                &amp; Livestock</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input checked class="rounded border-slate-300 text-primary focus:ring-primary"
+                                type="checkbox" onchange="updateCategory(this, 'tools')" />
+                            <span
+                                class="text-sm font-medium text-slate-700 group-hover:text-primary transition-colors">Tools</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Subcategory Filter -->
+                <div>
+                    <h3 class="text-sm font-black uppercase tracking-wider text-primary mb-3">Sub-Category</h3>
+                    <div class="bg-white p-5 rounded-xl border border-primary/10 shadow-sm space-y-3">
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input type="radio" name="subcategory" value="all" checked class="accent-primary"
+                                onchange="filterProducts()" />
+                            <span
+                                class="text-sm font-medium text-slate-700 group-hover:text-primary transition-colors">All
+                                Products</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input type="radio" name="subcategory" value="fresh" class="accent-primary"
+                                onchange="filterProducts()" />
+                            <span
+                                class="text-sm font-medium text-slate-700 group-hover:text-primary transition-colors">🌿
+                                Fresh Produce</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input type="radio" name="subcategory" value="bestseller" class="accent-primary"
+                                onchange="filterProducts()" />
+                            <span
+                                class="text-sm font-medium text-slate-700 group-hover:text-primary transition-colors">🔥
+                                Best Sellers</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input type="radio" name="subcategory" value="organic-only" class="accent-primary"
+                                onchange="filterProducts()" />
+                            <span
+                                class="text-sm font-medium text-slate-700 group-hover:text-primary transition-colors">✅
+                                Certified Organic</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input type="radio" name="subcategory" value="livestock" class="accent-primary"
+                                onchange="filterProducts()" />
+                            <span
+                                class="text-sm font-medium text-slate-700 group-hover:text-primary transition-colors">🐔
+                                Livestock & Feeds</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input type="radio" name="subcategory" value="tools" class="accent-primary"
+                                onchange="filterProducts()" />
+                            <span
+                                class="text-sm font-medium text-slate-700 group-hover:text-primary transition-colors">🛠
+                                Farm Tools</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Price Slider -->
+                <div>
+                    <h3 class="text-sm font-black uppercase tracking-wider text-primary mb-3">Price Range</h3>
+                    <div class="bg-white p-5 rounded-xl border border-primary/10 shadow-sm">
+                        <input type="range" min="100" max="5000" value="5000" step="100"
+                            class="w-full h-1.5 bg-primary/20 rounded-full appearance-none cursor-pointer accent-primary"
+                            id="shop-price" oninput="updatePriceLabel(this.value); filterProducts()">
+                        <div class="flex justify-between mt-3 text-xs font-bold text-slate-500">
+                            <span>₦100</span>
+                            <span id="price-val" class="text-primary font-black">₦5,000+</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Organic Toggle -->
+                <div
+                    class="flex items-center justify-between p-5 bg-white rounded-xl border border-primary/10 shadow-sm">
+                    <span class="text-sm font-black text-primary uppercase tracking-wider">Organic Only</span>
+                    <button id="organic-toggle" onclick="toggleOrganic()"
+                        class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-slate-300 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary/20">
+                        <span id="organic-knob"
+                            class="translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Product Grid -->
+            <div class="flex-1">
+                <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
+                    <h1 class="text-3xl font-black text-primary tracking-tight">Farm Shop</h1>
+                    <div class="flex items-center gap-3">
+                        <span id="product-count"
+                            class="text-sm font-medium text-slate-500 bg-white px-4 py-2 rounded-lg border border-primary/10">6
+                            Products</span>
+                        <button onclick="openCart()"
+                            class="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-primary/90 transition-all">
+                            <span class="material-symbols-outlined text-sm">shopping_cart</span>
+                            View Cart <span id="cart-count-btn"
+                                class="bg-gold text-primary rounded-full px-1.5 text-xs font-black hidden">0</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-6 lg:gap-8">
+
+                    <!-- Poultry: Farm Fresh Eggs -->
+                    <div class="product-card group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-primary/5"
+                        data-category="poultry" data-title="Farm Fresh Eggs" data-price="1500" data-organic="true"
+                        data-img="https://lh3.googleusercontent.com/aida-public/AB6AXuCeZa13cwuKrU-yDH12Jh2EXZo3WkF0vkNszSTqFblkNQqok7OumM_wmNJ0flJ9U6JwoMESimcNqEjoL1efaeO6iWVt60-EFrEixARZ0JSlBgClVz9yElGFjmWnexJDhrewkMCiL6bxDVSkPE-XJC9MruOq6Vm9iKXhhpge5XVvL8eWdHGZirglLvxLD7TeUgYzoeq31pYiauf8lndxioQQHDFyg0CTtwPfXXxvxrLBir7ZWuGxsOkWj94gyAThKDjbHxvgtGJpLNs">
+                        <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
+                            <img class="zoom-img w-full h-full object-cover transition-transform duration-700"
+                                alt="Farm Fresh Eggs"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeZa13cwuKrU-yDH12Jh2EXZo3WkF0vkNszSTqFblkNQqok7OumM_wmNJ0flJ9U6JwoMESimcNqEjoL1efaeO6iWVt60-EFrEixARZ0JSlBgClVz9yElGFjmWnexJDhrewkMCiL6bxDVSkPE-XJC9MruOq6Vm9iKXhhpge5XVvL8eWdHGZirglLvxLD7TeUgYzoeq31pYiauf8lndxioQQHDFyg0CTtwPfXXxvxrLBir7ZWuGxsOkWj94gyAThKDjbHxvgtGJpLNs"
+                                loading="lazy" />
+                            <div class="absolute top-4 left-4 flex flex-col gap-2">
+                                <span
+                                    class="pulse-badge inline-flex items-center rounded-lg bg-gold px-2.5 py-1 text-[10px] font-black text-white uppercase tracking-widest shadow-md">Fresh</span>
+                                <span
+                                    class="inline-flex items-center rounded-lg bg-green-500 px-2.5 py-1 text-[10px] font-black text-white uppercase tracking-widest shadow-md organic-badge">Organic</span>
+                            </div>
+                            <button
+                                class="add-to-cart-btn absolute bottom-4 right-4 translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 bg-primary hover:bg-gold text-white p-3.5 rounded-full shadow-lg">
+                                <span class="material-symbols-outlined pointer-events-none">add_shopping_cart</span>
+                            </button>
+                        </div>
+                        <div class="p-3 sm:p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-sm sm:text-lg text-primary truncate pr-1 sm:pr-2">Farm Fresh
+                                    Eggs</h3>
+                                <span class="font-black text-gold text-sm sm:text-lg product-price">₦1,500</span>
+                            </div>
+                            <p class="hidden sm:block text-sm text-slate-500 mb-3 sm:mb-4 line-clamp-2 leading-relaxed">
+                                Pasture-raised, gathered this morning. Super rich and vibrant yolks.</p>
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="inline-flex items-center gap-1 rounded bg-blue-50 px-2.5 py-1 text-[10px] font-bold text-blue-700 uppercase tracking-widest"><span
+                                        class="material-symbols-outlined text-[12px]">egg</span> Poultry</span>
+                                <button
+                                    class="add-to-cart-btn text-xs font-bold text-primary hover:text-gold transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">add_shopping_cart</span> Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vegetables: Heritage Carrots -->
+                    <div class="product-card group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-primary/5"
+                        data-category="vegetables" data-title="Heritage Carrots" data-price="800" data-organic="true"
+                        data-img="https://lh3.googleusercontent.com/aida-public/AB6AXuCvpRB3zHMCOc7Ug4OyqX7F_AsMB8VJ5J0QdjtzgC69JHA6TFO6zULF1iwV79qHc-jMN80nxgyKWC4vaqxIuyxiwQQswXD4qY9A3Axb7Tp8dApbTGQHOrCw-ikcbOSG8-PnqdZgOC6MkvGuvQgi-fTTP85qyPBBXHSN6DG9xPo1Sv08Ce9Q2XRK2QooYJCjQwqeYntX3y6YR-5G5vL82ou-Por-tzRnkDiJyk9OBUsqm-NybwkRsrk6DAbkK-emt4_Nwq7u_v_uU7A">
+                        <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
+                            <img class="zoom-img w-full h-full object-cover transition-transform duration-700"
+                                alt="Heritage Carrots"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvpRB3zHMCOc7Ug4OyqX7F_AsMB8VJ5J0QdjtzgC69JHA6TFO6zULF1iwV79qHc-jMN80nxgyKWC4vaqxIuyxiwQQswXD4qY9A3Axb7Tp8dApbTGQHOrCw-ikcbOSG8-PnqdZgOC6MkvGuvQgi-fTTP85qyPBBXHSN6DG9xPo1Sv08Ce9Q2XRK2QooYJCjQwqeYntX3y6YR-5G5vL82ou-Por-tzRnkDiJyk9OBUsqm-NybwkRsrk6DAbkK-emt4_Nwq7u_v_uU7A"
+                                loading="lazy" />
+                            <div class="absolute top-4 left-4 flex flex-col gap-2">
+                                <span
+                                    class="inline-flex items-center rounded-lg bg-green-500 px-2.5 py-1 text-[10px] font-black text-white uppercase tracking-widest shadow-md organic-badge">Organic</span>
+                            </div>
+                            <button
+                                class="add-to-cart-btn absolute bottom-4 right-4 translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 bg-primary hover:bg-gold text-white p-3.5 rounded-full shadow-lg">
+                                <span class="material-symbols-outlined pointer-events-none">add_shopping_cart</span>
+                            </button>
+                        </div>
+                        <div class="p-3 sm:p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-sm sm:text-lg text-primary truncate pr-1 sm:pr-2">Heritage
+                                    Carrots</h3>
+                                <span class="font-black text-gold text-sm sm:text-lg product-price">₦800</span>
+                            </div>
+                            <p class="hidden sm:block text-sm text-slate-500 mb-3 sm:mb-4 line-clamp-2 leading-relaxed">
+                                Sweet, crunchy, and mineral-rich fresh from our loamy soil.</p>
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="inline-flex items-center gap-1 rounded bg-green-50 px-2.5 py-1 text-[10px] font-bold text-green-700 uppercase tracking-widest"><span
+                                        class="material-symbols-outlined text-[12px]">local_florist</span>
+                                    Veggies</span>
+                                <button
+                                    class="add-to-cart-btn text-xs font-bold text-primary hover:text-gold transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">add_shopping_cart</span> Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feeds: Wildflower Honey -->
+                    <div class="product-card group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-primary/5"
+                        data-category="feeds" data-title="Wildflower Honey" data-price="3500" data-organic="true"
+                        data-img="https://lh3.googleusercontent.com/aida-public/AB6AXuD-ng7T_P7Ov_fF_2Bdqy6lU1sx6l0kn1W3R2NDCnFmW4QXr3ER9bDm3qxcCvhCDa7Sw8oezUuunMx3CyBlB0s5pORNMXXpRkQNT7yQi3zbvym8n-eo2VKyPQvPk4lrfefN2eZfs9i6-dlgmm0l82K4hkXjOhNHZZOrJUK3Y0bBEuYvZXWH2iALw4bNlPJ3f2k1KHDuKRy8Rpd2q7sjOhUFHYgDaVqsSORwHitJ7ElGkZi_K-MTCilZ-_HFgCyUfkzRbnKy6zUS1SI">
+                        <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
+                            <img class="zoom-img w-full h-full object-cover transition-transform duration-700"
+                                alt="Wildflower Honey"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-ng7T_P7Ov_fF_2Bdqy6lU1sx6l0kn1W3R2NDCnFmW4QXr3ER9bDm3qxcCvhCDa7Sw8oezUuunMx3CyBlB0s5pORNMXXpRkQNT7yQi3zbvym8n-eo2VKyPQvPk4lrfefN2eZfs9i6-dlgmm0l82K4hkXjOhNHZZOrJUK3Y0bBEuYvZXWH2iALw4bNlPJ3f2k1KHDuKRy8Rpd2q7sjOhUFHYgDaVqsSORwHitJ7ElGkZi_K-MTCilZ-_HFgCyUfkzRbnKy6zUS1SI"
+                                loading="lazy" />
+                            <div class="absolute top-4 left-4 flex flex-col gap-2">
+                                <span
+                                    class="inline-flex items-center rounded-lg bg-orange-500 px-2.5 py-1 text-[10px] font-black text-white uppercase tracking-widest shadow-md">Best
+                                    Seller</span>
+                                <span
+                                    class="inline-flex items-center rounded-lg bg-green-500 px-2.5 py-1 text-[10px] font-black text-white uppercase tracking-widest shadow-md organic-badge">Organic</span>
+                            </div>
+                            <button
+                                class="add-to-cart-btn absolute bottom-4 right-4 translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 bg-primary hover:bg-gold text-white p-3.5 rounded-full shadow-lg">
+                                <span class="material-symbols-outlined pointer-events-none">add_shopping_cart</span>
+                            </button>
+                        </div>
+                        <div class="p-3 sm:p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-sm sm:text-lg text-primary truncate pr-1 sm:pr-2">Wildflower
+                                    Honey</h3>
+                                <span class="font-black text-gold text-sm sm:text-lg product-price">₦3,500</span>
+                            </div>
+                            <p class="hidden sm:block text-sm text-slate-500 mb-3 sm:mb-4 line-clamp-2 leading-relaxed">
+                                Raw, unpasteurized honey harvested straight from our own apiaries.</p>
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="inline-flex items-center gap-1 rounded bg-orange-50 px-2.5 py-1 text-[10px] font-bold text-orange-700 uppercase tracking-widest"><span
+                                        class="material-symbols-outlined text-[12px]">hive</span> Feeds</span>
+                                <button
+                                    class="add-to-cart-btn text-xs font-bold text-primary hover:text-gold transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">add_shopping_cart</span> Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vegetables: Baby Spinach -->
+                    <div class="product-card group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-primary/5"
+                        data-category="vegetables" data-title="Baby Spinach" data-price="500" data-organic="true"
+                        data-img="https://lh3.googleusercontent.com/aida-public/AB6AXuCIcpu5_IBZycKeOHYFI8mEHG_6lPNgoi966WoDMF3ueBGKm6Jr5yFBKj8lwOQPVyUgXA6PN_thVjZ0TTYRq_RawWy5827yrVi9_73zg-nfXLi4YWdIBiBWCJbAkhi4-qDdmES1Oa6ATy9qMc2orvS7ChczRmVRJvQcrZnrWQvS0Gp-FizbPk8oA51Bq6W9mhDkhYaVgQbaYwsk96Hpu3LECAgyOOlWqSfQ6PaT3ENWVzSgsYsCb10aaAzU_HUs_FLLBnnEU8zTSGY">
+                        <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
+                            <img class="zoom-img w-full h-full object-cover transition-transform duration-700"
+                                alt="Baby Spinach"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIcpu5_IBZycKeOHYFI8mEHG_6lPNgoi966WoDMF3ueBGKm6Jr5yFBKj8lwOQPVyUgXA6PN_thVjZ0TTYRq_RawWy5827yrVi9_73zg-nfXLi4YWdIBiBWCJbAkhi4-qDdmES1Oa6ATy9qMc2orvS7ChczRmVRJvQcrZnrWQvS0Gp-FizbPk8oA51Bq6W9mhDkhYaVgQbaYwsk96Hpu3LECAgyOOlWqSfQ6PaT3ENWVzSgsYsCb10aaAzU_HUs_FLLBnnEU8zTSGY"
+                                loading="lazy" />
+                            <div class="absolute top-4 left-4 flex flex-col gap-2">
+                                <span
+                                    class="inline-flex items-center rounded-lg bg-green-500 px-2.5 py-1 text-[10px] font-black text-white uppercase tracking-widest shadow-md organic-badge">Organic</span>
+                            </div>
+                            <button
+                                class="add-to-cart-btn absolute bottom-4 right-4 translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 bg-primary hover:bg-gold text-white p-3.5 rounded-full shadow-lg">
+                                <span class="material-symbols-outlined pointer-events-none">add_shopping_cart</span>
+                            </button>
+                        </div>
+                        <div class="p-3 sm:p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-sm sm:text-lg text-primary truncate pr-1 sm:pr-2">Baby Spinach
+                                </h3>
+                                <span class="font-black text-gold text-sm sm:text-lg product-price">₦500</span>
+                            </div>
+                            <p class="hidden sm:block text-sm text-slate-500 mb-3 sm:mb-4 line-clamp-2 leading-relaxed">
+                                Crisp, triple-washed leaves loaded with robust iron.</p>
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="inline-flex items-center gap-1 rounded bg-green-50 px-2.5 py-1 text-[10px] font-bold text-green-700 uppercase tracking-widest"><span
+                                        class="material-symbols-outlined text-[12px]">local_florist</span>
+                                    Veggies</span>
+                                <button
+                                    class="add-to-cart-btn text-xs font-bold text-primary hover:text-gold transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">add_shopping_cart</span> Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feeds: Layer Pellets -->
+                    <div class="product-card group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-primary/5"
+                        data-category="feeds" data-title="Layer Pellets" data-price="4800" data-organic="false"
+                        data-img="https://lh3.googleusercontent.com/aida-public/AB6AXuD5mIW0XeasITboYRo8to1dLDfz_sNXy9nsQyrctqatBR8XMcMWbRqzHEmih-x6sSADRfxrU0echGfNds7zrb0hVvkf70fMw25KNQFjS1kbr-WHmmqgNTSYQxmOx10exScsCVRJKi-HXBj3FC1OzNlNy_DR1PlozOGKC9NlKrbRx_AAER89Dd_CUmMkHmusqfN785sZGwBxO6bGATPMwoJeFmRkM0eUdweNSQrhG8_qkCkJwPGCYUdpHtajKqwR9NN_CgOrNBZ50mw">
+                        <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
+                            <img class="zoom-img w-full h-full object-cover transition-transform duration-700"
+                                alt="Layer Pellets"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5mIW0XeasITboYRo8to1dLDfz_sNXy9nsQyrctqatBR8XMcMWbRqzHEmih-x6sSADRfxrU0echGfNds7zrb0hVvkf70fMw25KNQFjS1kbr-WHmmqgNTSYQxmOx10exScsCVRJKi-HXBj3FC1OzNlNy_DR1PlozOGKC9NlKrbRx_AAER89Dd_CUmMkHmusqfN785sZGwBxO6bGATPMwoJeFmRkM0eUdweNSQrhG8_qkCkJwPGCYUdpHtajKqwR9NN_CgOrNBZ50mw"
+                                loading="lazy" />
+                            <button
+                                class="add-to-cart-btn absolute bottom-4 right-4 translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 bg-primary hover:bg-gold text-white p-3.5 rounded-full shadow-lg">
+                                <span class="material-symbols-outlined pointer-events-none">add_shopping_cart</span>
+                            </button>
+                        </div>
+                        <div class="p-3 sm:p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-sm sm:text-lg text-primary truncate pr-1 sm:pr-2">Layer
+                                    Pellets</h3>
+                                <span class="font-black text-gold text-sm sm:text-lg product-price">₦4,800</span>
+                            </div>
+                            <p class="hidden sm:block text-sm text-slate-500 mb-3 sm:mb-4 line-clamp-2 leading-relaxed">
+                                High-protein non-GMO feed explicitly tailored for laying hens.</p>
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="inline-flex items-center gap-1 rounded bg-orange-50 px-2.5 py-1 text-[10px] font-bold text-orange-700 uppercase tracking-widest"><span
+                                        class="material-symbols-outlined text-[12px]">grain</span> Feeds</span>
+                                <button
+                                    class="add-to-cart-btn text-xs font-bold text-primary hover:text-gold transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">add_shopping_cart</span> Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tools: Steel Trowel -->
+                    <div class="product-card group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-primary/5"
+                        data-category="tools" data-title="Steel Trowel" data-price="2800" data-organic="false"
+                        data-img="https://lh3.googleusercontent.com/aida-public/AB6AXuA1jIB1eFr_UwEIodLnKg1MxJxU8Elz8oyJ2ymgR4LQ-vME99rbrn9-iTkyEuA0sy22r2y27kUIClEBUfMGZOw62kCXf53mhybvAi2IpdxFlY5ZQw8gcx6wStz4GJUa4x4OXduRqX4FEqT4vK_0Z3V0FQxG4RjD2LJCFXN4cyu7eITCShVDrnQUnICm2YbKSiIUGeBmkbto-ZwAwABDF6Z2suf0srHpTx9veZ_fdw5fhcFsnak_Wk5HTFL9X6Vu1l9I1sBqUevc4uw">
+                        <div class="relative aspect-[4/3] overflow-hidden bg-slate-100">
+                            <img class="zoom-img w-full h-full object-cover transition-transform duration-700"
+                                alt="Steel Trowel"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1jIB1eFr_UwEIodLnKg1MxJxU8Elz8oyJ2ymgR4LQ-vME99rbrn9-iTkyEuA0sy22r2y27kUIClEBUfMGZOw62kCXf53mhybvAi2IpdxFlY5ZQw8gcx6wStz4GJUa4x4OXduRqX4FEqT4vK_0Z3V0FQxG4RjD2LJCFXN4cyu7eITCShVDrnQUnICm2YbKSiIUGeBmkbto-ZwAwABDF6Z2suf0srHpTx9veZ_fdw5fhcFsnak_Wk5HTFL9X6Vu1l9I1sBqUevc4uw"
+                                loading="lazy" />
+                            <button
+                                class="add-to-cart-btn absolute bottom-4 right-4 translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 bg-primary hover:bg-gold text-white p-3.5 rounded-full shadow-lg">
+                                <span class="material-symbols-outlined pointer-events-none">add_shopping_cart</span>
+                            </button>
+                        </div>
+                        <div class="p-3 sm:p-5">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-bold text-sm sm:text-lg text-primary truncate pr-1 sm:pr-2">Steel Trowel
+                                </h3>
+                                <span class="font-black text-gold text-sm sm:text-lg product-price">₦2,800</span>
+                            </div>
+                            <p class="hidden sm:block text-sm text-slate-500 mb-3 sm:mb-4 line-clamp-2 leading-relaxed">
+                                Ergonomic grip, hand-forged rust-resistant carbon steel.</p>
+                            <div class="flex items-center justify-between">
+                                <span
+                                    class="inline-flex items-center gap-1 rounded bg-slate-100 px-2.5 py-1 text-[10px] font-bold text-slate-600 uppercase tracking-widest"><span
+                                        class="material-symbols-outlined text-[12px]">build</span> Tools</span>
+                                <button
+                                    class="add-to-cart-btn text-xs font-bold text-primary hover:text-gold transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">add_shopping_cart</span> Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- end grid -->
+                <!-- No results -->
+                <div id="no-results" class="hidden text-center py-20">
+                    <span class="material-symbols-outlined text-5xl text-primary/20">search_off</span>
+                    <p class="text-slate-400 mt-4 font-medium">No products match your filters.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-20 border-t border-primary/10 bg-white py-16">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                <div class="space-y-6">
+                    <img src="assets/logo.png" alt="Cedoka Farms" class="h-10 w-auto object-contain" />
+                    <div class="flex gap-2 items-center text-primary mt-2">
+                        <span class="material-symbols-outlined">location_on</span>
+                        <p class="text-sm font-bold">Ota, Ogun State, Nigeria</p>
+                    </div>
+                    <p class="text-sm text-slate-500 leading-relaxed font-medium">Cultivating a sustainable future
+                        through organic farming and ethical practices.</p>
+                </div>
+                <div>
+                    <h4 class="font-black text-primary mb-6 uppercase tracking-wider">Quick Links</h4>
+                    <ul class="space-y-4 text-sm font-medium text-slate-500">
+                        <li><a class="hover:text-gold transition" href="about.html">About Us</a></li>
+                        <li><a class="hover:text-gold transition" href="contact.html">Contact</a></li>
+                        <li><a class="hover:text-gold transition" href="#">Organic Certification</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-black text-primary mb-6 uppercase tracking-wider">Customer Care</h4>
+                    <ul class="space-y-4 text-sm font-medium text-slate-500">
+                        <li><a class="hover:text-gold transition" href="#">Help Center &amp; FAQ</a></li>
+                        <li><a class="hover:text-gold transition" href="#">Refund Policy</a></li>
+                        <li><a class="hover:text-gold transition" href="#">Shipping Info</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-black text-primary mb-6 uppercase tracking-wider">Newsletter</h4>
+                    <p class="text-sm text-slate-500 mb-4">Get harvest updates &amp; seasonal deals.</p>
+                    <div class="flex gap-2">
+                        <input
+                            class="bg-slate-100 border-slate-200 rounded-lg px-4 py-2 text-xs w-full focus:ring-1 focus:ring-primary focus:border-primary outline-none"
+                            placeholder="Email address" type="email" />
+                        <button class="bg-primary text-white p-2 rounded-lg hover:bg-gold transition-colors"><span
+                                class="material-symbols-outlined">arrow_forward</span></button>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-16 pt-8 border-t border-primary/10 text-center">
+                <p class="text-sm text-slate-500 font-bold tracking-wide">&copy; 2026 Cedoka Farms. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ========= CART SYSTEM ========= */
+        let cart = JSON.parse(localStorage.getItem('cedoka_cart') || '[]');
+
+        function saveCart() { localStorage.setItem('cedoka_cart', JSON.stringify(cart)); }
+
+        function addToCart(card) {
+            const title = card.dataset.title;
+            const price = parseFloat(card.dataset.price);
+            const img = card.dataset.img;
+            const existing = cart.find(i => i.title === title);
+            if (existing) { existing.qty++; } else { cart.push({ title, price, img, qty: 1 }); }
+            saveCart();
+            updateCartUI();
+            showToast(`✓ "${title}" added to cart!`);
+            // Cart drawer stays closed — user can open it manually
+        }
+
+        function removeFromCart(title) {
+            cart = cart.filter(i => i.title !== title);
+            saveCart(); updateCartUI(); renderCartDrawer();
+        }
+
+        function changeQty(title, delta) {
+            const item = cart.find(i => i.title === title);
+            if (!item) return;
+            item.qty += delta;
+            if (item.qty <= 0) return removeFromCart(title);
+            saveCart(); updateCartUI(); renderCartDrawer();
+        }
+
+        function updateCartUI() {
+            const total = cart.reduce((s, i) => s + i.qty, 0);
+            const badge = document.getElementById('cart-badge');
+            const countBtn = document.getElementById('cart-count-btn');
+            if (badge) { badge.textContent = total; badge.classList.toggle('hidden', total === 0); badge.classList.add('badge-pop'); setTimeout(() => badge.classList.remove('badge-pop'), 300); }
+            if (countBtn) { countBtn.textContent = total; countBtn.classList.toggle('hidden', total === 0); }
+        }
+
+        function renderCartDrawer() {
+            const container = document.getElementById('cart-items');
+            const empty = document.getElementById('cart-empty');
+            const footer = document.getElementById('cart-footer');
+            if (!container) return;
+            if (cart.length === 0) {
+                container.innerHTML = '';
+                container.classList.add('hidden');
+                empty.classList.remove('hidden'); empty.classList.add('flex');
+                footer.classList.add('hidden'); return;
+            }
+            container.classList.remove('hidden');
+            empty.classList.add('hidden'); empty.classList.remove('flex');
+            footer.classList.remove('hidden');
+            container.innerHTML = cart.map(item => `
+                <div class="flex gap-4 items-start py-3 border-b border-slate-100 last:border-0">
+                    <img src="${item.img}" alt="${item.title}" class="w-16 h-16 object-cover rounded-xl flex-shrink-0 bg-slate-100" />
+                    <div class="flex-1 min-w-0">
+                        <p class="font-bold text-primary text-sm truncate">${item.title}</p>
+                        <p class="text-gold font-black text-sm">₦${item.price.toFixed(2)}</p>
+                        <div class="flex items-center gap-2 mt-2">
+                            <button onclick="changeQty('${item.title.replace(/'/g, "\\'")}', -1)" class="w-7 h-7 rounded-full bg-primary/10 hover:bg-primary hover:text-white text-primary font-bold transition-all flex items-center justify-center text-sm">−</button>
+                            <span class="text-sm font-bold w-5 text-center">${item.qty}</span>
+                            <button onclick="changeQty('${item.title.replace(/'/g, "\\'")}', 1)" class="w-7 h-7 rounded-full bg-primary/10 hover:bg-primary hover:text-white text-primary font-bold transition-all flex items-center justify-center text-sm">+</button>
+                        </div>
+                    </div>
+                    <div class="text-right flex flex-col items-end gap-2">
+                        <p class="font-black text-primary text-sm">₦${(item.price * item.qty).toFixed(2)}</p>
+                        <button onclick="removeFromCart('${item.title.replace(/'/g, "\\'")}'))" class="text-slate-300 hover:text-red-400 transition-colors">
+                            <span class="material-symbols-outlined text-lg">delete</span>
+                        </button>
+                    </div>
+                </div>`).join('');
+            const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+            const subEl = document.getElementById('cart-subtotal');
+            if (subEl) subEl.textContent = `₦${subtotal.toFixed(2)}`;
+        }
+
+        function openCart() { document.getElementById('cart-drawer').classList.add('open'); document.getElementById('cart-overlay').classList.add('open'); renderCartDrawer(); }
+        function closeCart() { document.getElementById('cart-drawer').classList.remove('open'); document.getElementById('cart-overlay').classList.remove('open'); }
+
+        let toastTimer;
+        function showToast(msg) {
+            const toast = document.getElementById('cart-toast');
+            const msgEl = document.getElementById('toast-msg');
+            if (msgEl) msgEl.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        /* ========= FILTERS ========= */
+        let activeCategories = ['poultry', 'vegetables', 'feeds', 'tools'];
+        let isOrganicOnly = false;
+
+        function updateCategory(checkbox, category) {
+            if (checkbox.checked) { if (!activeCategories.includes(category)) activeCategories.push(category); }
+            else { activeCategories = activeCategories.filter(c => c !== category); }
+            filterProducts();
+        }
+
+        function toggleOrganic() {
+            isOrganicOnly = !isOrganicOnly;
+            const toggle = document.getElementById('organic-toggle');
+            const knob = document.getElementById('organic-knob');
+            if (isOrganicOnly) { toggle.classList.replace('bg-slate-300', 'bg-primary'); knob.classList.replace('translate-x-0', 'translate-x-5'); }
+            else { toggle.classList.replace('bg-primary', 'bg-slate-300'); knob.classList.replace('translate-x-5', 'translate-x-0'); }
+            filterProducts();
+        }
+
+        function updatePriceLabel(val) {
+            const label = document.getElementById('price-val');
+            if (label) label.textContent = parseInt(val) >= 5000 ? '₦5,000+' : '₦' + parseInt(val).toLocaleString();
+        }
+
+        function filterProducts() {
+            const searchTerm = document.getElementById('shop-search')?.value.toLowerCase() || '';
+            const sliderVal = parseInt(document.getElementById('shop-price')?.value) || 5000;
+            const isUncapped = sliderVal >= 5000;
+            const subcatEl = document.querySelector('input[name="subcategory"]:checked');
+            const subcat = subcatEl ? subcatEl.value : 'all';
+            const cards = document.querySelectorAll('.product-card');
+            let visible = 0;
+            cards.forEach(card => {
+                const cat = card.dataset.category || 'poultry';
+                const title = (card.dataset.title || '').toLowerCase();
+                const price = parseFloat(card.dataset.price) || 0;
+                const organic = card.dataset.organic === 'true';
+                const hasFreshBadge = card.querySelector('.pulse-badge') !== null;
+                const hasBestSeller = card.querySelector('[class*="bg-orange-500"]') !== null;
+
+                const matchesCat = activeCategories.includes(cat);
+                const matchesSearch = title.includes(searchTerm);
+                const matchesPrice = isUncapped || price <= sliderVal;
+                const matchesOrganic = isOrganicOnly ? organic : true;
+                let matchesSubcat = true;
+                if (subcat === 'fresh') matchesSubcat = hasFreshBadge;
+                else if (subcat === 'bestseller') matchesSubcat = hasBestSeller;
+                else if (subcat === 'organic-only') matchesSubcat = organic;
+                else if (subcat === 'livestock') matchesSubcat = cat === 'feeds' || cat === 'poultry';
+                else if (subcat === 'tools') matchesSubcat = cat === 'tools';
+
+                const show = matchesCat && matchesSearch && matchesPrice && matchesOrganic && matchesSubcat;
+                card.style.display = show ? '' : 'none';
+                if (show) visible++;
+            });
+            const noResults = document.getElementById('no-results');
+            const countEl = document.getElementById('product-count');
+            if (noResults) noResults.classList.toggle('hidden', visible > 0);
+            if (countEl) countEl.textContent = `${visible} Product${visible !== 1 ? 's' : ''}`;
+        }
+
+        /* ========= INIT ========= */
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartUI();
+            // Wire up all add-to-cart buttons
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => { e.stopPropagation(); addToCart(card); });
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
